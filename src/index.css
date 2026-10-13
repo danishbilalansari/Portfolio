@@ -124,3 +124,124 @@ html, body {
   }
 }
 
+/* ==========================================================================
+   POPUP LOAD BOUNCE ENTRANCE SYSTEM (TRAMPOLINE PHYSICS)
+   ========================================================================== */
+
+@keyframes itemBounceUp {
+  0% {
+    opacity: 0;
+    transform: translateY(48px) scale(0.78);
+  }
+  28% {
+    opacity: 1;
+    transform: translateY(-16px) scale(1.08); /* 1st launch: buoyant float at apex */
+  }
+  48% {
+    transform: translateY(8px) scale(0.96);   /* Dips down into trampoline bed */
+  }
+  65% {
+    transform: translateY(-6px) scale(1.035); /* 2nd bounce rebound */
+  }
+  80% {
+    transform: translateY(3px) scale(0.985);  /* Soft secondary cushion */
+  }
+  91% {
+    transform: translateY(-1px) scale(1.008); /* Gentle micro-settle */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);       /* Resting equilibrium */
+  }
+}
+
+@keyframes headerBounceDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-38px) scale(0.9);
+  }
+  28% {
+    opacity: 1;
+    transform: translateY(14px) scale(1.04);
+  }
+  48% {
+    transform: translateY(-7px) scale(0.97);
+  }
+  65% {
+    transform: translateY(5px) scale(1.02);
+  }
+  80% {
+    transform: translateY(-2px) scale(0.99);
+  }
+  91% {
+    transform: translateY(0.8px) scale(1.004);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Pre-load initial state */
+.popup-item {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(48px) scale(0.78);
+  will-change: opacity, transform;
+}
+
+.popup-delay-header {
+  transform: translateY(-38px) scale(0.9);
+}
+
+/* Base resting state and entrance animation when site is ready */
+.site-ready .popup-item {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  animation: itemBounceUp 1.85s cubic-bezier(0.25, 0.85, 0.35, 1) both;
+}
+
+.site-ready .popup-delay-header {
+  transform: translateY(0) scale(1);
+  animation: headerBounceDown 1.85s cubic-bezier(0.25, 0.85, 0.35, 1) both;
+}
+
+/* Staggered choreographies for text, cards, and buttons */
+.site-ready .popup-delay-header {
+  animation-delay: 0.10s;
+}
+
+.site-ready .popup-delay-headline-left {
+  animation-delay: 0.22s;
+}
+
+.site-ready .popup-delay-headline-right {
+  animation-delay: 0.34s;
+}
+
+.site-ready .popup-delay-bio {
+  animation-delay: 0.46s;
+}
+
+.site-ready .popup-delay-switcher {
+  animation-delay: 0.52s;
+}
+
+.site-ready .popup-delay-card-1 {
+  animation-delay: 0.62s;
+}
+
+.site-ready .popup-delay-pills-row {
+  animation-delay: 0.72s;
+}
+
+.site-ready .popup-delay-card-2 {
+  animation-delay: 0.82s;
+}
+
+.site-ready .popup-delay-pill-extra {
+  animation-delay: 0.92s;
+}
+
+

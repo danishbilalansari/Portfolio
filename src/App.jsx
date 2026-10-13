@@ -3,7 +3,7 @@ import CharacterCanvas from './components/CharacterCanvas';
 import Header from './components/Header';
 import HeroContent from './components/HeroContent';
 import CustomCursor from './components/CustomCursor';
-import GlowingTubesCursor from './components/GlowingTubesCursor';
+// import GlowingTubesCursor from './components/GlowingTubesCursor';
 import InfoDrawer from './components/InfoDrawer';
 import ThemeSwitcher from './components/ThemeSwitcher';
 
@@ -29,16 +29,15 @@ function App() {
       {/* Zero-Ghosting 60FPS Character Animation Canvas & Dedicated Preloader */}
       <CharacterCanvas frameTheme={frameTheme} onReadyChange={setIsReady} />
 
-      {/* Main UI Elements - Revealed smoothly only after the loader finishes completely */}
+      {/* Main UI Elements - Animated with individual popup entrances once ready */}
       <div
+        className={isReady ? 'site-ready' : 'site-loading'}
         style={{
-          opacity: isReady ? 1 : 0,
           pointerEvents: isReady ? 'auto' : 'none',
-          transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        {/* 3D Glowing Tubes Cursor Trail Effect */}
-        <GlowingTubesCursor frameTheme={frameTheme} />
+        {/* 3D Glowing Tubes Cursor Trail Effect (commented out) */}
+        {/* <GlowingTubesCursor frameTheme={frameTheme} /> */}
 
         {/* Custom Magnetic Cursor */}
         <CustomCursor frameTheme={frameTheme} />

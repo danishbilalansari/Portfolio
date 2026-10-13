@@ -12,6 +12,7 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
     <>
       {/* 1. TOP-LEFT EDITORIAL HEADLINE: Matches "SOURCE OF BOLD IDEAS/" */}
       <div
+        className="popup-item popup-delay-headline-left"
         style={{
           position: 'absolute',
           top: '90px',
@@ -53,6 +54,7 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
 
       {/* 2. TOP-RIGHT MASSIVE EDITORIAL HEADLINE: Matches "CREATIVE BRANDING AGENCY" */}
       <div
+        className="popup-item popup-delay-headline-right"
         style={{
           position: 'absolute',
           top: '90px',
@@ -148,7 +150,7 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
         {/* Card 1: Matches White "85%" card */}
         <div
           onClick={() => onOpenSection && onOpenSection('ABOUT')}
-          className="interactive"
+          className="interactive popup-item popup-delay-card-1"
           style={{
             width: '145px',
             height: '145px',
@@ -163,11 +165,11 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
             transition: 'all 0.25s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px)';
+            e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
             e.currentTarget.style.boxShadow = '0 14px 30px rgba(0, 0, 0, 0.14)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
             e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.08)';
           }}
         >
@@ -225,7 +227,7 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
         {/* Card 2: Matches Dark "Reload your brand" card */}
         <div
           onClick={() => onOpenSection && onOpenSection('WORK')}
-          className="interactive"
+          className="interactive popup-item popup-delay-card-2"
           style={{
             width: '145px',
             height: '145px',
@@ -242,10 +244,12 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
             border: isRed ? '1px solid rgba(255, 255, 255, 0.12)' : 'none',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px)';
+            e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
+            e.currentTarget.style.boxShadow = '0 14px 30px rgba(0, 0, 0, 0.24)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.16)';
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -291,7 +295,10 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
           gap: '8px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div
+          className="popup-item popup-delay-pills-row"
+          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+        >
           {/* Active dot pill: BRANDING style */}
           <button
             onClick={() => onOpenSection && onOpenSection('WORK')}
@@ -398,7 +405,10 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
         </div>
 
         {/* Second row: SOLUTIONS STRATEGY */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          className="popup-item popup-delay-pill-extra"
+          style={{ display: 'flex', alignItems: 'center' }}
+        >
           <button
             onClick={() => onOpenSection && onOpenSection('CONTACT')}
             className="interactive font-heading"

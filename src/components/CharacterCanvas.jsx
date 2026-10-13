@@ -12,13 +12,23 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
   const canvasRef = useRef(null);
   const [loadedPercent, setLoadedPercent] = useState(0);
   const [isReady, setIsReady] = useState(false);
+  const [showPreloader, setShowPreloader] = useState(true);
+
+  // Smooth preloader unmount after fade-out transition
+  useEffect(() => {
+    if (!isReady) return;
+    const timer = setTimeout(() => {
+      setShowPreloader(false);
+    }, 750);
+    return () => clearTimeout(timer);
+  }, [isReady]);
 
   // References
   const bitmapsRef = useRef([]);
   const centerBitmapRef = useRef(null);
-  const smoothedAngleRef = useRef(-Math.PI / 2);
-  const targetAngleRef = useRef(-Math.PI / 2);
-  const currentRenderKeyRef = useRef(null);
+  const smoothedAngleRef = useRef(0);
+  const targetAngleRef = useRef(0);
+  const currentRenderKeyRef = useRef('center');
   const lastTimeRef = useRef(0);
   const ctxRef = useRef(null);
 
@@ -40,9 +50,10 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
     drawY: 0,
   });
 
-  // Deadzone hysteresis
-  const inDeadzoneRef = useRef(false);
-  const eyeContactWeightRef = useRef(0.0);
+  // Deadzone hysteresis: start locked in deadzone so direct center eye-contact frame is shown on initial load
+  const inDeadzoneRef = useRef(true);
+  const eyeContactWeightRef = useRef(1.0);
+  const hasUserMovedMouseRef = useRef(false);
 
   // Helper to draw a specific frame immediately
   const drawFrame = useCallback((bmp) => {
@@ -130,13 +141,17 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
         const cached = themeCacheRef.current[frameTheme];
         bitmapsRef.current = cached.bitmaps;
         centerBitmapRef.current = cached.centerBitmap;
-        currentRenderKeyRef.current = null; // Force redraw on next frame
+        currentRenderKeyRef.current = 'center';
+        if (ctxRef.current) {
+          drawFrame(cached.centerBitmap);
+        }
         setIsReady(true);
         if (onReadyChange) onReadyChange(true);
         return;
       }
 
       // Not cached: enter full loading state
+      setShowPreloader(true);
       setIsReady(false);
       if (onReadyChange) onReadyChange(false);
 
@@ -148,7 +163,10 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
 
       bitmapsRef.current = data.bitmaps;
       centerBitmapRef.current = data.centerBitmap;
-      currentRenderKeyRef.current = null; // Force redraw on next frame
+      currentRenderKeyRef.current = 'center';
+      if (ctxRef.current) {
+        drawFrame(data.centerBitmap);
+      }
       setIsReady(true);
       if (onReadyChange) onReadyChange(true);
 
@@ -168,7 +186,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
     return () => {
       active = false;
     };
-  }, [frameTheme, loadTheme, onReadyChange]);
+  }, [frameTheme, loadTheme, onReadyChange, drawFrame]);
 
   // Setup Canvas and Render Loop
   useEffect(() => {
@@ -236,8 +254,15 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
     handleResize();
     window.addEventListener('resize', handleResize);
 
+    // Guarantee the initial rendered frame is the center frame
+    if (centerBitmapRef.current) {
+      currentRenderKeyRef.current = 'center';
+      drawFrame(centerBitmapRef.current);
+    }
+
     // Fast pointer calculation
     const handlePointerMove = (clientX, clientY) => {
+      hasUserMovedMouseRef.current = true;
       const { faceCenterX, faceCenterY, enterThreshold, exitThreshold } = layoutRef.current;
       const dx = clientX - faceCenterX;
       const dy = clientY - faceCenterY;
@@ -285,7 +310,8 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
       );
 
       // Smooth eye contact transition
-      const targetWeight = inDeadzoneRef.current ? 1.0 : 0.0;
+      // Maintain 100% direct center eye contact until user moves mouse
+      const targetWeight = (!hasUserMovedMouseRef.current || inDeadzoneRef.current) ? 1.0 : 0.0;
       eyeContactWeightRef.current += (targetWeight - eyeContactWeightRef.current) * weightFactor;
 
       let selectedBmp = null;
@@ -294,7 +320,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
       if (eyeContactWeightRef.current > 0.55 && centerBitmapRef.current) {
         selectedBmp = centerBitmapRef.current;
         renderKey = 'center';
-      } else if (bitmapsRef.current.length > 0) {
+      } else if (bitmapsRef.current && bitmapsRef.current.length > 0) {
         const total = bitmapsRef.current.length;
         let angleFromUp = smoothedAngleRef.current + Math.PI / 2;
         while (angleFromUp < 0) angleFromUp += Math.PI * 2;
@@ -303,7 +329,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
         const fraction = angleFromUp / (Math.PI * 2);
         const frameIndex = Math.round(fraction * total) % total;
 
-        selectedBmp = bitmapsRef.current[frameIndex] || bitmapsRef.current[0];
+        selectedBmp = bitmapsRef.current[frameIndex] || centerBitmapRef.current;
         renderKey = `frame_${frameIndex}`;
       }
 
@@ -350,56 +376,62 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
           width: '100%',
           height: '100%',
           objectFit: 'cover',
+          opacity: isReady ? 1 : 0,
+          transform: isReady ? 'scale(1)' : 'scale(1.03)',
+          transition:
+            'opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
+          willChange: 'opacity, transform',
         }}
       />
 
-      {/* Initial Minimal Preloader */}
-      {!isReady && (
+      {/* Initial Minimal Preloader - Dissolves smoothly when canvas is ready */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: themeBg,
+          zIndex: 100,
+          opacity: isReady ? 0 : 1,
+          pointerEvents: isReady ? 'none' : 'auto',
+          visibility: showPreloader ? 'visible' : 'hidden',
+          transition: 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.7s',
+        }}
+      >
         <div
           style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: themeBg,
-            zIndex: 100,
-            transition: 'opacity 0.6s ease-out',
+            width: '180px',
+            height: '2px',
+            backgroundColor: isRed ? 'rgba(255, 255, 255, 0.2)' : 'rgba(26, 25, 23, 0.1)',
+            borderRadius: '2px',
+            overflow: 'hidden',
+            marginBottom: '14px',
           }}
         >
           <div
             style={{
-              width: '180px',
-              height: '2px',
-              backgroundColor: isRed ? 'rgba(255, 255, 255, 0.2)' : 'rgba(26, 25, 23, 0.1)',
-              borderRadius: '2px',
-              overflow: 'hidden',
-              marginBottom: '14px',
+              width: `${loadedPercent}%`,
+              height: '100%',
+              backgroundColor: isRed ? '#ffffff' : '#1a1917',
+              transition: 'width 0.15s ease-out',
             }}
-          >
-            <div
-              style={{
-                width: `${loadedPercent}%`,
-                height: '100%',
-                backgroundColor: isRed ? '#ffffff' : '#1a1917',
-                transition: 'width 0.15s ease-out',
-              }}
-            />
-          </div>
-          <span
-            style={{
-              fontSize: '11px',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: isRed ? 'rgba(255, 255, 255, 0.75)' : '#8c877b',
-              fontWeight: 500,
-            }}
-          >
-            INITIALIZING {frameTheme.toUpperCase()} FRAMES • {loadedPercent}%
-          </span>
+          />
         </div>
-      )}
+        <span
+          style={{
+            fontSize: '11px',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: isRed ? 'rgba(255, 255, 255, 0.75)' : '#8c877b',
+            fontWeight: 500,
+          }}
+        >
+          INITIALIZING • {loadedPercent}%
+        </span>
+      </div>
     </div>
   );
 }

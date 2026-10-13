@@ -56,7 +56,7 @@ export default function ThemeSwitcher({ frameTheme, onSelectTheme }) {
       {/* PURE COMPACT VERTICAL GLASS DOCK (COLOR ORBS ONLY) */}
       <div
         id="theme-glass-dock"
-        className={isRed ? 'glass-dock-red' : 'glass-dock'}
+        className={`${isRed ? 'glass-dock-red' : 'glass-dock'} popup-item popup-delay-switcher`}
         onMouseEnter={handleDockEnter}
         onMouseLeave={handleDockLeave}
         style={{

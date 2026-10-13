@@ -14,6 +14,7 @@ export default function Header({ activeSection, onSelectSection, frameTheme = 'y
 
   return (
     <header
+      className="popup-item popup-delay-header"
       style={{
         position: 'fixed',
         top: 0,

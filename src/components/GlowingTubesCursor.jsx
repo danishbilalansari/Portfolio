@@ -9,9 +9,27 @@ function randomColors(count) {
   return Array.from({ length: count }, () => randomHexColor());
 }
 
+function getThemePalette(theme) {
+  if (theme === 'red') {
+    return {
+      colors: ['#ff2a5f', '#ff7b00', '#ff003c'],
+      lights: ['#ff0055', '#ffaa00', '#ff0033', '#ffffff'],
+    };
+  }
+  return {
+    colors: ['#ffd700', '#ff6b2b', '#6958d5'],
+    lights: ['#ffe600', '#fe8a2e', '#ff008a', '#60aed5'],
+  };
+}
+
 export default function GlowingTubesCursor({ frameTheme = 'yellow' }) {
   const canvasRef = useRef(null);
   const appRef = useRef(null);
+  const themeRef = useRef(frameTheme);
+
+  useEffect(() => {
+    themeRef.current = frameTheme;
+  }, [frameTheme]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -20,28 +38,19 @@ export default function GlowingTubesCursor({ frameTheme = 'yellow' }) {
     let app = null;
 
     try {
-      // Palette tuned to match the tutorial & active theme
-      const initialColors =
-        frameTheme === 'red'
-          ? ['#ff2a5f', '#ff7b00', '#ff003c']
-          : ['#f967fb', '#53bc28', '#6958d5'];
-
-      const initialLights =
-        frameTheme === 'red'
-          ? ['#ff0055', '#ffaa00', '#ff0033', '#ffffff']
-          : ['#83f36e', '#fe8a2e', '#ff008a', '#60aed5'];
+      const palette = getThemePalette(themeRef.current);
 
       app = TubesCursor(canvas, {
         bloom: {
-          threshold: 0,
-          strength: 1.6,
-          radius: 0.6,
+          threshold: 0.05,
+          strength: 1.4,
+          radius: 0.5,
         },
         tubes: {
           count: 18,
-          colors: initialColors,
+          colors: palette.colors,
           minRadius: 0.006,
-          maxRadius: 0.045,
+          maxRadius: 0.042,
           minTubularSegments: 32,
           maxTubularSegments: 128,
           material: {
@@ -49,24 +58,33 @@ export default function GlowingTubesCursor({ frameTheme = 'yellow' }) {
             roughness: 0.2,
           },
           lights: {
-            intensity: 220,
-            colors: initialLights,
+            intensity: 240,
+            colors: palette.lights,
           },
           lerp: 0.45,
           noise: 0.04,
         },
-        sleepRadiusX: 280,
-        sleepRadiusY: 140,
+        sleepRadiusX: 240,
+        sleepRadiusY: 120,
         sleepTimeScale1: 1,
         sleepTimeScale2: 2,
       });
+
+      // Ensure Three.js renderer clear color has 0 alpha so background is transparent
+      if (app && app.three && app.three.renderer) {
+        try {
+          app.three.renderer.setClearColor(0x000000, 0);
+        } catch {
+          // ignore if not supported by node pass
+        }
+      }
 
       appRef.current = app;
     } catch (err) {
       console.error('Failed to initialize Glowing Tubes Cursor:', err);
     }
 
-    // Click anywhere on screen randomizes the glowing colors, exactly as in the tutorial
+    // Click anywhere on screen randomizes the glowing colors
     const handleDocumentClick = (e) => {
       // Don't override if clicking interactive controls like drawer or switcher
       if (
@@ -90,7 +108,7 @@ export default function GlowingTubesCursor({ frameTheme = 'yellow' }) {
       if (app) {
         try {
           app.dispose();
-        } catch (e) {
+        } catch {
           // ignore cleanup errors
         }
       }
@@ -101,18 +119,9 @@ export default function GlowingTubesCursor({ frameTheme = 'yellow' }) {
   // Sync colors when theme changes
   useEffect(() => {
     if (!appRef.current || !appRef.current.tubes) return;
-    const themeColors =
-      frameTheme === 'red'
-        ? ['#ff2a5f', '#ff7b00', '#ff003c']
-        : ['#f967fb', '#53bc28', '#6958d5'];
-
-    const themeLights =
-      frameTheme === 'red'
-        ? ['#ff0055', '#ffaa00', '#ff0033', '#ffffff']
-        : ['#83f36e', '#fe8a2e', '#ff008a', '#60aed5'];
-
-    appRef.current.tubes.setColors(themeColors);
-    appRef.current.tubes.setLightsColors(themeLights);
+    const { colors, lights } = getThemePalette(frameTheme);
+    appRef.current.tubes.setColors(colors);
+    appRef.current.tubes.setLightsColors(lights);
   }, [frameTheme]);
 
   return (
@@ -123,8 +132,9 @@ export default function GlowingTubesCursor({ frameTheme = 'yellow' }) {
         width: '100vw',
         height: '100vh',
         pointerEvents: 'none',
-        zIndex: 25,
+        zIndex: 15, // Sits directly on top of character canvas (zIndex: 1) and beneath UI text/buttons (zIndex: 40+)
         overflow: 'hidden',
+        mixBlendMode: 'screen', // Completely knocks out black background while preserving vibrant glowing neon tubes
       }}
       aria-hidden="true"
     >
@@ -135,6 +145,7 @@ export default function GlowingTubesCursor({ frameTheme = 'yellow' }) {
           height: '100%',
           display: 'block',
           pointerEvents: 'none',
+          mixBlendMode: 'screen',
         }}
       />
     </div>
