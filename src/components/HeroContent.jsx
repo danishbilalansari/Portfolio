@@ -206,7 +206,7 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
                 marginBottom: '8px',
               }}
             >
-              10+<span style={{ fontSize: '18px' }}>Y</span>
+              13+<span style={{ fontSize: '18px' }}>Y</span>
             </div>
             <div
               className="font-body"

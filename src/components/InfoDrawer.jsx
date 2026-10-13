@@ -27,8 +27,21 @@ function LinkedinIcon({ size = 20, color = 'currentColor' }) {
   );
 }
 
-export default function InfoDrawer({ activeSection, onClose }) {
+export default function InfoDrawer({ activeSection, onClose, frameTheme = 'yellow' }) {
   if (!activeSection) return null;
+
+  const isRed = frameTheme === 'red';
+
+  const overlayBg = isRed ? 'rgba(20, 5, 6, 0.45)' : 'rgba(26, 25, 23, 0.28)';
+  const drawerBg = isRed ? 'rgba(182, 44, 42, 0.96)' : 'rgba(252, 246, 226, 0.94)';
+  const drawerBorderLeft = isRed ? '1px solid rgba(255, 255, 255, 0.28)' : '1px solid rgba(255, 255, 255, 0.8)';
+  const drawerShadow = isRed ? '-16px 0 50px rgba(0, 0, 0, 0.45)' : '-16px 0 45px rgba(50, 40, 20, 0.15)';
+  const headerBorder = isRed ? '1px solid rgba(255, 255, 255, 0.16)' : '1px solid rgba(26, 25, 23, 0.08)';
+  const dirColor = isRed ? 'rgba(255, 255, 255, 0.65)' : '#8c877b';
+  const sectionTitleColor = isRed ? '#ffffff' : '#23262f';
+  const closeBtnBg = isRed ? 'rgba(255, 255, 255, 0.14)' : 'rgba(26, 25, 23, 0.06)';
+  const closeBtnHoverBg = isRed ? 'rgba(255, 255, 255, 0.25)' : 'rgba(26, 25, 23, 0.14)';
+  const closeBtnColor = isRed ? '#ffffff' : '#23262f';
 
   return (
     <div
@@ -38,7 +51,7 @@ export default function InfoDrawer({ activeSection, onClose }) {
         zIndex: 60,
         display: 'flex',
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(26, 25, 23, 0.28)',
+        backgroundColor: overlayBg,
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
         transition: 'opacity 0.35s ease',
@@ -51,11 +64,11 @@ export default function InfoDrawer({ activeSection, onClose }) {
         style={{
           width: 'min(90vw, 560px)',
           height: '100%',
-          backgroundColor: 'rgba(252, 246, 226, 0.94)',
+          backgroundColor: drawerBg,
           backdropFilter: 'blur(30px)',
           WebkitBackdropFilter: 'blur(30px)',
-          borderLeft: '1px solid rgba(255, 255, 255, 0.8)',
-          boxShadow: '-16px 0 45px rgba(50, 40, 20, 0.15)',
+          borderLeft: drawerBorderLeft,
+          boxShadow: drawerShadow,
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
@@ -69,7 +82,7 @@ export default function InfoDrawer({ activeSection, onClose }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            borderBottom: '1px solid rgba(26, 25, 23, 0.08)',
+            borderBottom: headerBorder,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -79,7 +92,7 @@ export default function InfoDrawer({ activeSection, onClose }) {
                 fontWeight: 700,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: '#8c877b',
+                color: dirColor,
               }}
             >
               DIRECTORY //
@@ -88,7 +101,7 @@ export default function InfoDrawer({ activeSection, onClose }) {
               style={{
                 fontSize: '15px',
                 fontWeight: 700,
-                color: '#23262f',
+                color: sectionTitleColor,
                 letterSpacing: '0.08em',
               }}
             >
@@ -100,7 +113,7 @@ export default function InfoDrawer({ activeSection, onClose }) {
             onClick={onClose}
             className="interactive"
             style={{
-              background: 'rgba(26, 25, 23, 0.06)',
+              background: closeBtnBg,
               border: 'none',
               width: '36px',
               height: '36px',
@@ -109,15 +122,15 @@ export default function InfoDrawer({ activeSection, onClose }) {
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              color: '#23262f',
+              color: closeBtnColor,
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(26, 25, 23, 0.14)';
+              e.currentTarget.style.backgroundColor = closeBtnHoverBg;
               e.currentTarget.style.transform = 'scale(1.05)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(26, 25, 23, 0.06)';
+              e.currentTarget.style.backgroundColor = closeBtnBg;
               e.currentTarget.style.transform = 'scale(1)';
             }}
             aria-label="Close"
@@ -137,9 +150,9 @@ export default function InfoDrawer({ activeSection, onClose }) {
             gap: '32px',
           }}
         >
-          {activeSection === 'WORK' && <WorkSection />}
-          {activeSection === 'ABOUT' && <AboutSection />}
-          {activeSection === 'CONTACT' && <ContactSection />}
+          {activeSection === 'WORK' && <WorkSection frameTheme={frameTheme} />}
+          {activeSection === 'ABOUT' && <AboutSection frameTheme={frameTheme} />}
+          {activeSection === 'CONTACT' && <ContactSection frameTheme={frameTheme} />}
         </div>
       </aside>
     </div>
@@ -147,7 +160,26 @@ export default function InfoDrawer({ activeSection, onClose }) {
 }
 
 // --- WORK SECTION (FEATURED SYSTEMS) ---
-function WorkSection() {
+function WorkSection({ frameTheme = 'yellow' }) {
+  const isRed = frameTheme === 'red';
+  const sublabelColor = isRed ? '#fde047' : '#8c877b';
+  const headingColor = isRed ? '#ffffff' : '#23262f';
+  const descColor = isRed ? 'rgba(255, 255, 255, 0.85)' : '#666157';
+
+  const cardBg = isRed ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.65)';
+  const cardHoverBg = isRed ? 'rgba(255, 255, 255, 0.22)' : 'rgba(255, 255, 255, 0.95)';
+  const cardBorder = isRed ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(255, 255, 255, 0.85)';
+  const cardShadow = isRed ? '0 8px 24px rgba(0, 0, 0, 0.18)' : '0 4px 18px rgba(60, 50, 20, 0.04)';
+  const cardHoverShadow = isRed ? '0 12px 30px rgba(0, 0, 0, 0.28)' : '0 10px 24px rgba(60, 50, 20, 0.08)';
+
+  const cardTitleColor = isRed ? '#ffffff' : '#23262f';
+  const cardHighlightColor = isRed ? '#fde047' : '#8c877b';
+  const cardDescColor = isRed ? 'rgba(255, 255, 255, 0.88)' : '#4d4a43';
+
+  const pillBg = isRed ? 'rgba(255, 255, 255, 0.18)' : 'rgba(26, 25, 23, 0.06)';
+  const pillColor = isRed ? '#ffffff' : '#2b2926';
+  const pillBorder = isRed ? '1px solid rgba(255, 255, 255, 0.2)' : 'none';
+
   const systems = [
     {
       title: 'GNG Airline Ticketing System',
@@ -208,7 +240,7 @@ function WorkSection() {
             fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: '#8c877b',
+            color: sublabelColor,
           }}
         >
           FLAGSHIP PROJECTS
@@ -217,14 +249,14 @@ function WorkSection() {
           style={{
             fontSize: '24px',
             fontWeight: 800,
-            color: '#23262f',
+            color: headingColor,
             marginTop: '4px',
           }}
         >
           Architected Systems
         </h2>
-        <p style={{ fontSize: '14px', color: '#666157', marginTop: '6px' }}>
-          Mission-critical distributed systems, microservices, and FinTech infrastructures built over a decade of engineering.
+        <p style={{ fontSize: '14px', color: descColor, marginTop: '6px' }}>
+          Mission-critical distributed systems, microservices, and FinTech infrastructures built over 13+ years of engineering.
         </p>
       </div>
 
@@ -236,20 +268,20 @@ function WorkSection() {
             style={{
               padding: '20px',
               borderRadius: '16px',
-              backgroundColor: 'rgba(255, 255, 255, 0.65)',
-              border: '1px solid rgba(255, 255, 255, 0.85)',
-              boxShadow: '0 4px 18px rgba(60, 50, 20, 0.04)',
+              backgroundColor: cardBg,
+              border: cardBorder,
+              boxShadow: cardShadow,
               transition: 'all 0.25s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+              e.currentTarget.style.backgroundColor = cardHoverBg;
               e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 10px 24px rgba(60, 50, 20, 0.08)';
+              e.currentTarget.style.boxShadow = cardHoverShadow;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.65)';
+              e.currentTarget.style.backgroundColor = cardBg;
               e.currentTarget.style.transform = 'translateY(0px)';
-              e.currentTarget.style.boxShadow = '0 4px 18px rgba(60, 50, 20, 0.04)';
+              e.currentTarget.style.boxShadow = cardShadow;
             }}
           >
             <div
@@ -260,14 +292,14 @@ function WorkSection() {
                 marginBottom: '4px',
               }}
             >
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#23262f' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: cardTitleColor }}>
                 {s.title}
               </h3>
               <span
                 style={{
                   fontSize: '11px',
                   fontWeight: 600,
-                  color: '#8c877b',
+                  color: cardHighlightColor,
                   letterSpacing: '0.04em',
                 }}
               >
@@ -275,7 +307,7 @@ function WorkSection() {
               </span>
             </div>
 
-            <p style={{ fontSize: '13px', color: '#4d4a43', lineHeight: 1.5, marginBottom: '14px' }}>
+            <p style={{ fontSize: '13px', color: cardDescColor, lineHeight: 1.5, marginBottom: '14px' }}>
               {s.description}
             </p>
 
@@ -288,8 +320,9 @@ function WorkSection() {
                     fontWeight: 600,
                     padding: '4px 10px',
                     borderRadius: '999px',
-                    backgroundColor: 'rgba(26, 25, 23, 0.06)',
-                    color: '#2b2926',
+                    backgroundColor: pillBg,
+                    color: pillColor,
+                    border: pillBorder,
                   }}
                 >
                   {t}
@@ -304,7 +337,35 @@ function WorkSection() {
 }
 
 // --- ABOUT SECTION (CAREER & EXPERTISE FROM RESUME) ---
-function AboutSection() {
+function AboutSection({ frameTheme = 'yellow' }) {
+  const isRed = frameTheme === 'red';
+  const sublabelColor = isRed ? '#fde047' : '#8c877b';
+  const headingColor = isRed ? '#ffffff' : '#23262f';
+  const descColor = isRed ? 'rgba(255, 255, 255, 0.85)' : '#575c69';
+
+  const downloadBtnBg = isRed ? '#ffffff' : '#23262f';
+  const downloadBtnColor = isRed ? '#cd3f3c' : '#ffffff';
+
+  const eduCardBg = isRed ? 'rgba(255, 255, 255, 0.12)' : '#ffffff';
+  const eduCardBorder = isRed ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(35, 38, 47, 0.08)';
+  const eduLabelColor = isRed ? '#fde047' : '#888f9e';
+  const eduDegreeColor = isRed ? '#ffffff' : '#23262f';
+  const eduUnivColor = isRed ? 'rgba(255, 255, 255, 0.8)' : '#575c69';
+
+  const skillCardBg = isRed ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.6)';
+  const skillCardBorder = isRed ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(255, 255, 255, 0.85)';
+  const skillCardTitleColor = isRed ? '#ffffff' : '#23262f';
+  const skillTagBg = isRed ? 'rgba(255, 255, 255, 0.18)' : 'rgba(35, 38, 47, 0.06)';
+  const skillTagColor = isRed ? '#ffffff' : '#23262f';
+  const skillTagBorder = isRed ? '1px solid rgba(255, 255, 255, 0.2)' : 'none';
+
+  const expCardBg = isRed ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.7)';
+  const expCardBorder = isRed ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(255, 255, 255, 0.9)';
+  const expRoleColor = isRed ? '#ffffff' : '#23262f';
+  const expCompanyColor = isRed ? 'rgba(255, 255, 255, 0.8)' : '#575c69';
+  const expPeriodColor = isRed ? '#fde047' : '#888f9e';
+  const expPointColor = isRed ? 'rgba(255, 255, 255, 0.85)' : '#575c69';
+
   const experiences = [
     {
       role: 'Lead .Net Developer',
@@ -382,7 +443,7 @@ function AboutSection() {
                 fontWeight: 700,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: '#8c877b',
+                color: sublabelColor,
               }}
             >
               PROFESSIONAL PROFILE
@@ -392,7 +453,7 @@ function AboutSection() {
               style={{
                 fontSize: '24px',
                 fontWeight: 800,
-                color: '#23262f',
+                color: headingColor,
                 marginTop: '4px',
               }}
             >
@@ -407,8 +468,8 @@ function AboutSection() {
             style={{
               padding: '8px 16px',
               borderRadius: '999px',
-              backgroundColor: '#23262f',
-              color: '#ffffff',
+              backgroundColor: downloadBtnBg,
+              color: downloadBtnColor,
               fontSize: '11px',
               fontWeight: 800,
               letterSpacing: '0.08em',
@@ -416,6 +477,7 @@ function AboutSection() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
+              boxShadow: isRed ? '0 4px 14px rgba(0,0,0,0.3)' : 'none',
             }}
           >
             <span>DOWNLOAD PDF</span>
@@ -423,8 +485,8 @@ function AboutSection() {
           </a>
         </div>
 
-        <p className="font-body" style={{ fontSize: '13.5px', color: '#575c69', marginTop: '10px', lineHeight: 1.65 }}>
-          Seasoned Lead .NET Software Engineer with over a decade of industry experience architecting scalable distributed systems, microservices, and high-frequency transaction applications across <strong>Airline Ticketing</strong>, <strong>Logistics</strong>, and <strong>FinTech Core Banking</strong>.
+        <p className="font-body" style={{ fontSize: '13.5px', color: descColor, marginTop: '10px', lineHeight: 1.65 }}>
+          Seasoned Lead .NET Software Engineer with 13+ years of industry experience architecting scalable distributed systems, microservices, and high-frequency transaction applications across <strong style={{ color: headingColor }}>Airline Ticketing</strong>, <strong style={{ color: headingColor }}>Logistics</strong>, and <strong style={{ color: headingColor }}>FinTech Core Banking</strong>.
         </p>
       </div>
 
@@ -433,25 +495,25 @@ function AboutSection() {
         style={{
           padding: '16px 20px',
           borderRadius: '14px',
-          backgroundColor: '#ffffff',
-          border: '1px solid rgba(35, 38, 47, 0.08)',
-          boxShadow: '0 4px 16px rgba(35, 38, 47, 0.04)',
+          backgroundColor: eduCardBg,
+          border: eduCardBorder,
+          boxShadow: isRed ? '0 4px 18px rgba(0, 0, 0, 0.16)' : '0 4px 16px rgba(35, 38, 47, 0.04)',
         }}
       >
-        <div style={{ fontSize: '11px', fontWeight: 700, color: '#888f9e', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
+        <div style={{ fontSize: '11px', fontWeight: 700, color: eduLabelColor, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
           EDUCATION
         </div>
-        <div className="font-heading" style={{ fontSize: '15px', fontWeight: 800, color: '#23262f' }}>
+        <div className="font-heading" style={{ fontSize: '15px', fontWeight: 800, color: eduDegreeColor }}>
           MS Computer Science
         </div>
-        <div className="font-body" style={{ fontSize: '12.5px', color: '#575c69', marginTop: '2px' }}>
+        <div className="font-body" style={{ fontSize: '12.5px', color: eduUnivColor, marginTop: '2px' }}>
           Virtual University of Pakistan
         </div>
       </div>
 
       {/* Skills Matrix */}
       <div>
-        <h3 className="font-heading" style={{ fontSize: '14px', fontWeight: 800, color: '#23262f', marginBottom: '12px' }}>
+        <h3 className="font-heading" style={{ fontSize: '14px', fontWeight: 800, color: headingColor, marginBottom: '12px' }}>
           Technical Stack & Arsenal
         </h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -461,11 +523,11 @@ function AboutSection() {
               style={{
                 padding: '14px',
                 borderRadius: '12px',
-                backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                border: '1px solid rgba(255, 255, 255, 0.85)',
+                backgroundColor: skillCardBg,
+                border: skillCardBorder,
               }}
             >
-              <div className="font-heading" style={{ fontSize: '11px', fontWeight: 800, color: '#23262f', marginBottom: '8px' }}>
+              <div className="font-heading" style={{ fontSize: '11px', fontWeight: 800, color: skillCardTitleColor, marginBottom: '8px' }}>
                 {cat.title}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
@@ -478,8 +540,9 @@ function AboutSection() {
                       fontWeight: 600,
                       padding: '3px 8px',
                       borderRadius: '6px',
-                      backgroundColor: 'rgba(35, 38, 47, 0.06)',
-                      color: '#23262f',
+                      backgroundColor: skillTagBg,
+                      color: skillTagColor,
+                      border: skillTagBorder,
                     }}
                   >
                     {s}
@@ -493,7 +556,7 @@ function AboutSection() {
 
       {/* Experience Timeline */}
       <div>
-        <h3 className="font-heading" style={{ fontSize: '14px', fontWeight: 800, color: '#23262f', marginBottom: '14px' }}>
+        <h3 className="font-heading" style={{ fontSize: '14px', fontWeight: 800, color: headingColor, marginBottom: '14px' }}>
           Career Trajectory (2013 – Present)
         </h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -503,19 +566,19 @@ function AboutSection() {
               style={{
                 padding: '16px',
                 borderRadius: '14px',
-                backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                border: '1px solid rgba(255, 255, 255, 0.9)',
+                backgroundColor: expCardBg,
+                border: expCardBorder,
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <div className="font-heading" style={{ fontSize: '13.5px', fontWeight: 800, color: '#23262f' }}>
-                  {exp.role} • <span style={{ color: '#575c69' }}>{exp.company}</span>
+                <div className="font-heading" style={{ fontSize: '13.5px', fontWeight: 800, color: expRoleColor }}>
+                  {exp.role} • <span style={{ color: expCompanyColor }}>{exp.company}</span>
                 </div>
-                <div style={{ fontSize: '11px', fontWeight: 700, color: '#888f9e' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: expPeriodColor }}>
                   {exp.period}
                 </div>
               </div>
-              <ul style={{ margin: '10px 0 0 16px', padding: 0, fontSize: '12px', color: '#575c69', lineHeight: 1.55 }}>
+              <ul style={{ margin: '10px 0 0 16px', padding: 0, fontSize: '12px', color: expPointColor, lineHeight: 1.55 }}>
                 {exp.points.map((pt, pidx) => (
                   <li key={pidx} style={{ marginBottom: '5px' }}>
                     {pt}
@@ -531,7 +594,33 @@ function AboutSection() {
 }
 
 // --- CONTACT SECTION ---
-function ContactSection() {
+function ContactSection({ frameTheme = 'yellow' }) {
+  const isRed = frameTheme === 'red';
+  const sublabelColor = isRed ? '#fde047' : '#8c877b';
+  const headingColor = isRed ? '#ffffff' : '#23262f';
+  const descColor = isRed ? 'rgba(255, 255, 255, 0.85)' : '#666157';
+
+  const cardBg = isRed ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.7)';
+  const cardHoverBg = isRed ? 'rgba(255, 255, 255, 0.22)' : '#ffffff';
+  const cardBorder = isRed ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(255, 255, 255, 0.9)';
+  const cardShadow = isRed ? '0 8px 24px rgba(0, 0, 0, 0.18)' : '0 4px 16px rgba(60, 50, 20, 0.04)';
+
+  const iconBoxBg = isRed ? 'rgba(255, 255, 255, 0.18)' : 'rgba(26, 25, 23, 0.05)';
+  const iconColor = isRed ? '#ffffff' : '#23262f';
+  const labelColor = isRed ? '#fde047' : '#8c877b';
+  const valColor = isRed ? '#ffffff' : '#23262f';
+  const arrowColor = isRed ? 'rgba(255, 255, 255, 0.75)' : '#8c877b';
+
+  const resumeCardBg = isRed ? '#ffffff' : '#23262f';
+  const resumeCardColor = isRed ? '#cd3f3c' : '#ffffff';
+  const resumeTagColor = isRed ? '#cd3f3c' : '#f8eec1';
+  const resumeIconBg = isRed ? 'rgba(205, 63, 60, 0.12)' : 'rgba(255, 255, 255, 0.12)';
+  const resumeIconColor = isRed ? '#cd3f3c' : '#f8eec1';
+
+  const locationBg = isRed ? 'rgba(255, 255, 255, 0.12)' : 'rgba(26, 25, 23, 0.04)';
+  const locationColor = isRed ? 'rgba(255, 255, 255, 0.88)' : '#55524b';
+  const locationIconColor = isRed ? '#fde047' : '#8c877b';
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       <div>
@@ -541,7 +630,7 @@ function ContactSection() {
             fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: '#8c877b',
+            color: sublabelColor,
           }}
         >
           GET IN TOUCH
@@ -550,13 +639,13 @@ function ContactSection() {
           style={{
             fontSize: '24px',
             fontWeight: 800,
-            color: '#23262f',
+            color: headingColor,
             marginTop: '4px',
           }}
         >
           Let's Build Together
         </h2>
-        <p style={{ fontSize: '14px', color: '#666157', marginTop: '6px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '14px', color: descColor, marginTop: '6px', lineHeight: 1.6 }}>
           Available for technical leadership, enterprise systems architecture, and consulting engagements.
         </p>
       </div>
@@ -572,20 +661,22 @@ function ContactSection() {
             justifyContent: 'space-between',
             padding: '18px 22px',
             borderRadius: '16px',
-            backgroundColor: '#ffffff',
-            border: '1px solid rgba(26, 25, 23, 0.08)',
+            backgroundColor: isRed ? 'rgba(255, 255, 255, 0.14)' : '#ffffff',
+            border: isRed ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(26, 25, 23, 0.08)',
             textDecoration: 'none',
-            color: '#23262f',
-            boxShadow: '0 4px 16px rgba(60, 50, 20, 0.06)',
+            color: valColor,
+            boxShadow: cardShadow,
             transition: 'all 0.25s ease',
           }}
           onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = isRed ? 'rgba(255, 255, 255, 0.22)' : '#ffffff';
             e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(60, 50, 20, 0.12)';
+            e.currentTarget.style.boxShadow = isRed ? '0 12px 30px rgba(0,0,0,0.28)' : '0 8px 24px rgba(60, 50, 20, 0.12)';
           }}
           onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = isRed ? 'rgba(255, 255, 255, 0.14)' : '#ffffff';
             e.currentTarget.style.transform = 'translateY(0px)';
-            e.currentTarget.style.boxShadow = '0 4px 16px rgba(60, 50, 20, 0.06)';
+            e.currentTarget.style.boxShadow = cardShadow;
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -594,22 +685,22 @@ function ContactSection() {
                 width: '42px',
                 height: '42px',
                 borderRadius: '12px',
-                backgroundColor: 'rgba(26, 25, 23, 0.05)',
+                backgroundColor: iconBoxBg,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <Mail size={20} color="#23262f" />
+              <Mail size={20} color={iconColor} />
             </div>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#8c877b', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: labelColor, textTransform: 'uppercase' }}>
                 Email
               </div>
               <div style={{ fontSize: '14px', fontWeight: 700 }}>danishbilalansari@gmail.com</div>
             </div>
           </div>
-          <ExternalLink size={16} color="#8c877b" />
+          <ExternalLink size={16} color={arrowColor} />
         </a>
 
         <a
@@ -623,20 +714,22 @@ function ContactSection() {
             justifyContent: 'space-between',
             padding: '18px 22px',
             borderRadius: '16px',
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            border: '1px solid rgba(255, 255, 255, 0.9)',
+            backgroundColor: cardBg,
+            border: cardBorder,
             textDecoration: 'none',
-            color: '#23262f',
-            boxShadow: '0 4px 16px rgba(60, 50, 20, 0.04)',
+            color: valColor,
+            boxShadow: cardShadow,
             transition: 'all 0.25s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#ffffff';
+            e.currentTarget.style.backgroundColor = cardHoverBg;
             e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = isRed ? '0 12px 30px rgba(0,0,0,0.28)' : '0 8px 24px rgba(60, 50, 20, 0.12)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+            e.currentTarget.style.backgroundColor = cardBg;
             e.currentTarget.style.transform = 'translateY(0px)';
+            e.currentTarget.style.boxShadow = cardShadow;
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -645,22 +738,22 @@ function ContactSection() {
                 width: '42px',
                 height: '42px',
                 borderRadius: '12px',
-                backgroundColor: 'rgba(26, 25, 23, 0.05)',
+                backgroundColor: iconBoxBg,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <LinkedinIcon size={20} color="#0077b5" />
+              <LinkedinIcon size={20} color={isRed ? '#ffffff' : '#0077b5'} />
             </div>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#8c877b', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: labelColor, textTransform: 'uppercase' }}>
                 LinkedIn
               </div>
               <div style={{ fontSize: '14px', fontWeight: 700 }}>danish-bilal-ansari</div>
             </div>
           </div>
-          <ExternalLink size={16} color="#8c877b" />
+          <ExternalLink size={16} color={arrowColor} />
         </a>
 
         <a
@@ -674,20 +767,22 @@ function ContactSection() {
             justifyContent: 'space-between',
             padding: '18px 22px',
             borderRadius: '16px',
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            border: '1px solid rgba(255, 255, 255, 0.9)',
+            backgroundColor: cardBg,
+            border: cardBorder,
             textDecoration: 'none',
-            color: '#23262f',
-            boxShadow: '0 4px 16px rgba(60, 50, 20, 0.04)',
+            color: valColor,
+            boxShadow: cardShadow,
             transition: 'all 0.25s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#ffffff';
+            e.currentTarget.style.backgroundColor = cardHoverBg;
             e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = isRed ? '0 12px 30px rgba(0,0,0,0.28)' : '0 8px 24px rgba(60, 50, 20, 0.12)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+            e.currentTarget.style.backgroundColor = cardBg;
             e.currentTarget.style.transform = 'translateY(0px)';
+            e.currentTarget.style.boxShadow = cardShadow;
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -696,23 +791,24 @@ function ContactSection() {
                 width: '42px',
                 height: '42px',
                 borderRadius: '12px',
-                backgroundColor: 'rgba(26, 25, 23, 0.05)',
+                backgroundColor: iconBoxBg,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <GithubIcon size={20} color="#23262f" />
+              <GithubIcon size={20} color={iconColor} />
             </div>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#8c877b', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: labelColor, textTransform: 'uppercase' }}>
                 GitHub
               </div>
               <div style={{ fontSize: '14px', fontWeight: 700 }}>danishbilalansari</div>
             </div>
           </div>
-          <ExternalLink size={16} color="#8c877b" />
+          <ExternalLink size={16} color={arrowColor} />
         </a>
+
         {/* Phone Card */}
         <a
           href="tel:+923314313183"
@@ -723,20 +819,22 @@ function ContactSection() {
             justifyContent: 'space-between',
             padding: '18px 22px',
             borderRadius: '16px',
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            border: '1px solid rgba(255, 255, 255, 0.9)',
+            backgroundColor: cardBg,
+            border: cardBorder,
             textDecoration: 'none',
-            color: '#23262f',
-            boxShadow: '0 4px 16px rgba(60, 50, 20, 0.04)',
+            color: valColor,
+            boxShadow: cardShadow,
             transition: 'all 0.25s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#ffffff';
+            e.currentTarget.style.backgroundColor = cardHoverBg;
             e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = isRed ? '0 12px 30px rgba(0,0,0,0.28)' : '0 8px 24px rgba(60, 50, 20, 0.12)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+            e.currentTarget.style.backgroundColor = cardBg;
             e.currentTarget.style.transform = 'translateY(0px)';
+            e.currentTarget.style.boxShadow = cardShadow;
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -745,22 +843,22 @@ function ContactSection() {
                 width: '42px',
                 height: '42px',
                 borderRadius: '12px',
-                backgroundColor: 'rgba(26, 25, 23, 0.05)',
+                backgroundColor: iconBoxBg,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <Briefcase size={20} color="#23262f" />
+              <Briefcase size={20} color={iconColor} />
             </div>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#8c877b', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: labelColor, textTransform: 'uppercase' }}>
                 Phone / Mobile
               </div>
               <div style={{ fontSize: '14px', fontWeight: 700 }}>+92 331 4313183</div>
             </div>
           </div>
-          <ExternalLink size={16} color="#8c877b" />
+          <ExternalLink size={16} color={arrowColor} />
         </a>
 
         {/* Resume Download Card */}
@@ -774,17 +872,19 @@ function ContactSection() {
             justifyContent: 'space-between',
             padding: '18px 22px',
             borderRadius: '16px',
-            backgroundColor: '#23262f',
+            backgroundColor: resumeCardBg,
             textDecoration: 'none',
-            color: '#ffffff',
-            boxShadow: '0 6px 20px rgba(35, 38, 47, 0.15)',
+            color: resumeCardColor,
+            boxShadow: isRed ? '0 10px 30px rgba(0,0,0,0.35)' : '0 6px 20px rgba(35, 38, 47, 0.15)',
             transition: 'all 0.25s ease',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = isRed ? '0 14px 36px rgba(0,0,0,0.45)' : '0 8px 26px rgba(35, 38, 47, 0.22)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0px)';
+            e.currentTarget.style.boxShadow = isRed ? '0 10px 30px rgba(0,0,0,0.35)' : '0 6px 20px rgba(35, 38, 47, 0.15)';
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -793,22 +893,22 @@ function ContactSection() {
                 width: '42px',
                 height: '42px',
                 borderRadius: '12px',
-                backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                backgroundColor: resumeIconBg,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <CheckCircle2 size={20} color="#f8eec1" />
+              <CheckCircle2 size={20} color={resumeIconColor} />
             </div>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: '#f8eec1', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: resumeTagColor, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 Official Resume
               </div>
               <div className="font-heading" style={{ fontSize: '14px', fontWeight: 800 }}>Download PDF (Latest)</div>
             </div>
           </div>
-          <ExternalLink size={16} color="#f8eec1" />
+          <ExternalLink size={16} color={resumeIconColor} />
         </a>
       </div>
 
@@ -820,13 +920,13 @@ function ContactSection() {
           gap: '8px',
           padding: '14px 18px',
           borderRadius: '12px',
-          backgroundColor: 'rgba(26, 25, 23, 0.04)',
-          color: '#55524b',
+          backgroundColor: locationBg,
+          color: locationColor,
           fontSize: '13px',
           fontWeight: 500,
         }}
       >
-        <MapPin size={16} color="#8c877b" />
+        <MapPin size={16} color={locationIconColor} />
         <span>Based in Lahore, Pakistan • Open to Global Remote Leadership</span>
       </div>
     </div>

@@ -8,11 +8,10 @@ function lerpAngle(current, target, factor) {
   return current + diff * factor;
 }
 
-export default function CharacterCanvas({ frameTheme = 'yellow' }) {
+export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }) {
   const canvasRef = useRef(null);
   const [loadedPercent, setLoadedPercent] = useState(0);
   const [isReady, setIsReady] = useState(false);
-  const [isSwitching, setIsSwitching] = useState(false);
 
   // References
   const bitmapsRef = useRef([]);
@@ -100,9 +99,15 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
         );
       }
 
-      const validBitmaps = loadedBitmaps.filter(Boolean);
+      // Fill any rare missing bitmap with neighboring bitmap to preserve exact index mapping
+      for (let i = 0; i < total; i++) {
+        if (!loadedBitmaps[i]) {
+          loadedBitmaps[i] = loadedBitmaps[i - 1] || centerBmp;
+        }
+      }
+
       const themeData = {
-        bitmaps: validBitmaps,
+        bitmaps: loadedBitmaps,
         centerBitmap: centerBmp,
         isReady: true,
       };
@@ -127,14 +132,13 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
         centerBitmapRef.current = cached.centerBitmap;
         currentRenderKeyRef.current = null; // Force redraw on next frame
         setIsReady(true);
-        setIsSwitching(false);
+        if (onReadyChange) onReadyChange(true);
         return;
       }
 
-      // If already ready with another theme, show minimal switching indicator
-      if (isReady) {
-        setIsSwitching(true);
-      }
+      // Not cached: enter full loading state
+      setIsReady(false);
+      if (onReadyChange) onReadyChange(false);
 
       const data = await loadTheme(frameTheme, (pct) => {
         if (active) setLoadedPercent(pct);
@@ -146,7 +150,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
       centerBitmapRef.current = data.centerBitmap;
       currentRenderKeyRef.current = null; // Force redraw on next frame
       setIsReady(true);
-      setIsSwitching(false);
+      if (onReadyChange) onReadyChange(true);
 
       // Background pre-load alternate theme for instant future switching
       const altTheme = frameTheme === 'yellow' ? 'red' : 'yellow';
@@ -164,7 +168,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
     return () => {
       active = false;
     };
-  }, [frameTheme, isReady, loadTheme]);
+  }, [frameTheme, loadTheme, onReadyChange]);
 
   // Setup Canvas and Render Loop
   useEffect(() => {
@@ -210,9 +214,14 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
       }
 
       const screenDim = Math.min(width, height);
+      const cssDrawX = drawX / dpr;
+      const cssDrawY = drawY / dpr;
+      const cssDrawW = drawW / dpr;
+      const cssDrawH = drawH / dpr;
+
       layoutRef.current = {
-        faceCenterX: width * 0.5,
-        faceCenterY: height * 0.36,
+        faceCenterX: cssDrawX + cssDrawW * 0.5,
+        faceCenterY: cssDrawY + cssDrawH * 0.35,
         enterThreshold: screenDim * 0.11,
         exitThreshold: screenDim * 0.14,
         drawW,
@@ -253,6 +262,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
       }
     };
 
+    window.addEventListener('pointermove', onMouseMove, { passive: true });
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
 
@@ -311,6 +321,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('pointermove', onMouseMove);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('touchmove', onTouchMove);
     };
@@ -353,7 +364,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: themeBg,
-            zIndex: 10,
+            zIndex: 100,
             transition: 'opacity 0.6s ease-out',
           }}
         >
@@ -387,30 +398,6 @@ export default function CharacterCanvas({ frameTheme = 'yellow' }) {
           >
             INITIALIZING {frameTheme.toUpperCase()} FRAMES • {loadedPercent}%
           </span>
-        </div>
-      )}
-
-      {/* Minimal Top-Right Micro-Indicator when streaming/switching theme */}
-      {isSwitching && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '80px',
-            right: '4.5vw',
-            zIndex: 30,
-            backgroundColor: isRed ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '999px',
-            padding: '4px 12px',
-            fontSize: '10px',
-            fontWeight: 700,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: isRed ? '#ffffff' : '#23262f',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-          }}
-        >
-          LOADING {frameTheme.toUpperCase()} • {loadedPercent}%
         </div>
       )}
     </div>

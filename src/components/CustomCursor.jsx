@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function CustomCursor() {
+export default function CustomCursor({ frameTheme = 'yellow' }) {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const isRed = frameTheme === 'red';
 
   useEffect(() => {
     let targetX = window.innerWidth / 2;
@@ -141,12 +142,15 @@ export default function CustomCursor() {
           left: 0,
           width: '7px',
           height: '7px',
-          backgroundColor: '#23262f',
+          backgroundColor: isRed ? '#ffffff' : '#23262f',
           borderRadius: '50%',
           pointerEvents: 'none',
           zIndex: 9999,
-          boxShadow: '0 0 8px 1px rgba(35, 38, 47, 0.25)',
+          boxShadow: isRed
+            ? '0 0 10px 2px rgba(255, 255, 255, 0.65)'
+            : '0 0 8px 1px rgba(35, 38, 47, 0.25)',
           willChange: 'transform',
+          transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
         }}
       />
       {/* Silky trailing momentum aura ring */}
@@ -159,12 +163,15 @@ export default function CustomCursor() {
           width: '38px',
           height: '38px',
           borderRadius: '50%',
-          border: '1.5px solid #23262f',
-          backgroundColor: 'rgba(35, 38, 47, 0.04)',
-          boxShadow: '0 0 16px rgba(35, 38, 47, 0.05)',
+          border: isRed ? '1.5px solid #ffffff' : '1.5px solid #23262f',
+          backgroundColor: isRed ? 'rgba(255, 255, 255, 0.08)' : 'rgba(35, 38, 47, 0.04)',
+          boxShadow: isRed
+            ? '0 0 20px rgba(255, 255, 255, 0.15)'
+            : '0 0 16px rgba(35, 38, 47, 0.05)',
           pointerEvents: 'none',
           zIndex: 9998,
           willChange: 'transform, opacity',
+          transition: 'border-color 0.3s ease, background-color 0.3s ease',
         }}
       />
     </div>

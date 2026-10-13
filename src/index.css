@@ -70,6 +70,37 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
+/* User's Liquid Glass UI Refractive Lens Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid transparent;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6), 0 16px 32px rgba(0, 0, 0, 0.12);
+  backdrop-filter: url(#frosted) blur(20px) saturate(180%);
+  -webkit-backdrop-filter: url(#frosted) blur(20px) saturate(180%);
+  outline: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-dock {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.65), 0 16px 36px rgba(0, 0, 0, 0.14);
+  backdrop-filter: url(#frosted) blur(24px) saturate(190%);
+  -webkit-backdrop-filter: url(#frosted) blur(24px) saturate(190%);
+  outline: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-dock-red {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.35), 0 16px 36px rgba(0, 0, 0, 0.3);
+  backdrop-filter: url(#frosted) blur(24px) saturate(190%);
+  -webkit-backdrop-filter: url(#frosted) blur(24px) saturate(190%);
+  outline: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
