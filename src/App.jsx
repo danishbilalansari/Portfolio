@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CharacterCanvas from './components/CharacterCanvas';
+import NetworkMesh from './components/NetworkMesh';
 import Header from './components/Header';
 import HeroContent from './components/HeroContent';
 import CustomCursor from './components/CustomCursor';
@@ -11,6 +12,7 @@ function App() {
   const [activeSection, setActiveSection] = useState(null);
   const [frameTheme, setFrameTheme] = useState('yellow');
   const [isReady, setIsReady] = useState(false);
+  const [showNetworkMesh, setShowNetworkMesh] = useState(true);
 
   const isRed = frameTheme === 'red';
   const mainBg = isRed ? '#cd3f3c' : '#f8eec1';
@@ -26,6 +28,9 @@ function App() {
         transition: 'background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
+      {/* Dense Moving Line Mesh Background Effect - Behind profile image & all elements */}
+      <NetworkMesh frameTheme={frameTheme} isVisible={showNetworkMesh} />
+
       {/* Zero-Ghosting 60FPS Character Animation Canvas & Dedicated Preloader */}
       <CharacterCanvas frameTheme={frameTheme} onReadyChange={setIsReady} />
 
@@ -59,6 +64,8 @@ function App() {
         <ThemeSwitcher
           frameTheme={frameTheme}
           onSelectTheme={(theme) => setFrameTheme(theme)}
+          showNetworkMesh={showNetworkMesh}
+          onToggleNetworkMesh={() => setShowNetworkMesh((prev) => !prev)}
         />
 
         {/* Slide-over Luxury Drawer */}

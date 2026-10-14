@@ -115,18 +115,21 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
               justifyContent: 'center',
               cursor: 'pointer',
               color: headingColor,
-              transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               flexShrink: 0,
+              transformOrigin: 'center center',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = isRed ? '#ffffff' : '#23262f';
               e.currentTarget.style.color = isRed ? '#cd3f3c' : '#ffffff';
-              e.currentTarget.style.transform = 'scale(1.08)';
+              e.currentTarget.style.transform = 'scale(1.18)';
+              e.currentTarget.style.boxShadow = isRed ? '0 10px 24px rgba(0,0,0,0.3)' : '0 8px 20px rgba(35,38,47,0.18)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
               e.currentTarget.style.color = headingColor;
               e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             <ArrowUpRight size={18} strokeWidth={2.2} />
@@ -147,136 +150,148 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
           gap: '12px',
         }}
       >
-        {/* Card 1: Matches White "85%" card */}
-        <div
-          onClick={() => onOpenSection && onOpenSection('ABOUT')}
-          className="interactive popup-item popup-delay-card-1"
-          style={{
-            width: '145px',
-            height: '145px',
-            backgroundColor: '#ffffff',
-            borderRadius: '16px',
-            padding: '16px',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            cursor: 'pointer',
-            transition: 'all 0.25s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
-            e.currentTarget.style.boxShadow = '0 14px 30px rgba(0, 0, 0, 0.14)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.08)';
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            {/* 4 dots icon */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 4px)', gap: '2px', paddingTop: '2px' }}>
-              <span style={{ width: '4px', height: '4px', backgroundColor: '#23262f', borderRadius: '1px' }} />
-              <span style={{ width: '4px', height: '4px', backgroundColor: '#23262f', borderRadius: '1px' }} />
-              <span style={{ width: '4px', height: '4px', backgroundColor: '#23262f', borderRadius: '1px' }} />
-              <span style={{ width: '4px', height: '4px', backgroundColor: '#23262f', borderRadius: '1px' }} />
+        {/* Card 1 Wrapper for entrance bounce */}
+        <div className="popup-item popup-delay-card-1" style={{ display: 'flex' }}>
+          {/* Card 1: Matches White "85%" card */}
+          <div
+            onClick={() => onOpenSection && onOpenSection('ABOUT')}
+            className="interactive hero-card hero-card-1"
+            style={{
+              width: '145px',
+              height: '145px',
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              padding: '16px',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+              transform: 'scale(1)',
+              transformOrigin: 'center center',
+              transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.12)';
+              e.currentTarget.style.boxShadow = '0 18px 40px rgba(0, 0, 0, 0.16)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.08)';
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              {/* 4 dots icon moving in circle */}
+              <div style={{ paddingTop: '2px' }}>
+                <div className="moving-circle-grid">
+                  <span style={{ width: '4px', height: '4px', backgroundColor: '#23262f', borderRadius: '1px', display: 'block' }} />
+                  <span style={{ width: '4px', height: '4px', backgroundColor: '#23262f', borderRadius: '1px', display: 'block' }} />
+                  <span style={{ width: '4px', height: '4px', backgroundColor: '#23262f', borderRadius: '1px', display: 'block' }} />
+                  <span style={{ width: '4px', height: '4px', backgroundColor: '#23262f', borderRadius: '1px', display: 'block' }} />
+                </div>
+              </div>
+              <span
+                className="font-body"
+                style={{
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  color: '#575c69',
+                  textAlign: 'right',
+                  lineHeight: 1.25,
+                  maxWidth: '65px',
+                }}
+              >
+                Systems that lead forward
+              </span>
             </div>
-            <span
-              className="font-body"
-              style={{
-                fontSize: '9px',
-                fontWeight: 600,
-                color: '#575c69',
-                textAlign: 'right',
-                lineHeight: 1.25,
-                maxWidth: '65px',
-              }}
-            >
-              Systems that lead forward
-            </span>
-          </div>
 
-          <div>
-            <div
-              className="font-heading"
-              style={{
-                fontSize: '34px',
-                lineHeight: 0.9,
-                fontWeight: 900,
-                color: '#23262f',
-                letterSpacing: '-0.04em',
-                marginBottom: '8px',
-              }}
-            >
-              13+<span style={{ fontSize: '18px' }}>Y</span>
-            </div>
-            <div
-              className="font-body"
-              style={{
-                fontSize: '9px',
-                color: '#575c69',
-                fontWeight: 500,
-                lineHeight: 1.2,
-              }}
-            >
-              Industry architecture
+            <div>
+              <div
+                className="font-heading"
+                style={{
+                  fontSize: '34px',
+                  lineHeight: 0.9,
+                  fontWeight: 900,
+                  color: '#23262f',
+                  letterSpacing: '-0.04em',
+                  marginBottom: '8px',
+                }}
+              >
+                13+<span style={{ fontSize: '18px' }}>Y</span>
+              </div>
+              <div
+                className="font-body"
+                style={{
+                  fontSize: '9px',
+                  color: '#575c69',
+                  fontWeight: 500,
+                  lineHeight: 1.2,
+                }}
+              >
+                Industry architecture
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Card 2: Matches Dark "Reload your brand" card */}
-        <div
-          onClick={() => onOpenSection && onOpenSection('WORK')}
-          className="interactive popup-item popup-delay-card-2"
-          style={{
-            width: '145px',
-            height: '145px',
-            backgroundColor: '#23262f',
-            borderRadius: '16px',
-            padding: '16px',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.16)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            color: '#ffffff',
-            cursor: 'pointer',
-            transition: 'all 0.25s ease',
-            border: isRed ? '1px solid rgba(255, 255, 255, 0.12)' : 'none',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
-            e.currentTarget.style.boxShadow = '0 14px 30px rgba(0, 0, 0, 0.24)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.16)';
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <span
-              className="font-heading"
-              style={{
-                fontSize: '11px',
-                fontWeight: 800,
-                lineHeight: 1.2,
-                color: '#ffffff',
-                textTransform: 'none',
-              }}
-            >
-              Scale<br />your system
-            </span>
-            <span style={{ fontSize: '12px', color: '#ffffff' }}>★</span>
-          </div>
-
+        {/* Card 2 Wrapper for entrance bounce */}
+        <div className="popup-item popup-delay-card-2" style={{ display: 'flex' }}>
+          {/* Card 2: Matches Dark "Reload your brand" card */}
           <div
-            className="font-body"
+            onClick={() => onOpenSection && onOpenSection('WORK')}
+            className="interactive hero-card hero-card-2"
             style={{
-              fontSize: '9px',
-              color: 'rgba(255, 255, 255, 0.65)',
-              lineHeight: 1.35,
+              width: '145px',
+              height: '145px',
+              backgroundColor: '#23262f',
+              borderRadius: '16px',
+              padding: '16px',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.16)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              color: '#ffffff',
+              cursor: 'pointer',
+              transform: 'scale(1)',
+              transformOrigin: 'center center',
+              transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              border: isRed ? '1px solid rgba(255, 255, 255, 0.12)' : 'none',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.12)';
+              e.currentTarget.style.boxShadow = '0 18px 40px rgba(0, 0, 0, 0.28)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.16)';
             }}
           >
-            We build resilient distributed microservices built to grow and perform
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <span
+                className="font-heading"
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  lineHeight: 1.2,
+                  color: '#ffffff',
+                  textTransform: 'none',
+                }}
+              >
+                Scale<br />your system
+              </span>
+              <span style={{ fontSize: '12px', color: '#ffffff' }}>★</span>
+            </div>
+
+            <div
+              className="font-body"
+              style={{
+                fontSize: '9px',
+                color: 'rgba(255, 255, 255, 0.65)',
+                lineHeight: 1.35,
+              }}
+            >
+              We build resilient distributed microservices built to grow and perform
+            </div>
           </div>
         </div>
       </div>
@@ -317,11 +332,19 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              transformOrigin: 'center center',
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'scale(1.12)';
+              e.currentTarget.style.boxShadow = isRed ? '0 8px 20px rgba(0,0,0,0.24)' : '0 8px 18px rgba(0,0,0,0.16)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
             }}
           >
             <span
@@ -352,18 +375,23 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              transformOrigin: 'center center',
               backdropFilter: isRed ? 'blur(10px)' : 'none',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = isRed
                 ? 'rgba(255, 255, 255, 0.25)'
                 : 'rgba(35, 38, 47, 0.12)';
+              e.currentTarget.style.transform = 'scale(1.12)';
+              e.currentTarget.style.boxShadow = isRed ? '0 8px 20px rgba(0,0,0,0.24)' : '0 6px 16px rgba(0,0,0,0.1)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = isRed
                 ? 'rgba(255, 255, 255, 0.15)'
                 : 'rgba(35, 38, 47, 0.05)';
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             MICROSERVICES
@@ -386,18 +414,23 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              transformOrigin: 'center center',
               backdropFilter: isRed ? 'blur(10px)' : 'none',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = isRed
                 ? 'rgba(255, 255, 255, 0.25)'
                 : 'rgba(35, 38, 47, 0.12)';
+              e.currentTarget.style.transform = 'scale(1.12)';
+              e.currentTarget.style.boxShadow = isRed ? '0 8px 20px rgba(0,0,0,0.24)' : '0 6px 16px rgba(0,0,0,0.1)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = isRed
                 ? 'rgba(255, 255, 255, 0.15)'
                 : 'rgba(35, 38, 47, 0.05)';
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             AZURE CLOUD
@@ -425,15 +458,20 @@ export default function HeroContent({ onOpenSection, frameTheme = 'yellow' }) {
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              transformOrigin: 'center center',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = isRed ? '#ffffff' : '#23262f';
               e.currentTarget.style.color = isRed ? '#cd3f3c' : '#ffffff';
+              e.currentTarget.style.transform = 'scale(1.12)';
+              e.currentTarget.style.boxShadow = isRed ? '0 8px 22px rgba(0,0,0,0.26)' : '0 6px 18px rgba(0,0,0,0.12)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
               e.currentTarget.style.color = isRed ? '#ffffff' : '#23262f';
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             SOLUTIONS STRATEGY

@@ -51,10 +51,10 @@ export default function Header({ activeSection, onSelectSection, frameTheme = 'y
           DB
         </span>
 
-        {/* Minimal Hamburger lines */}
+        {/* Minimal Hamburger lines (No popup effect) */}
         <button
           onClick={() => onSelectSection && onSelectSection(activeSection ? null : 'WORK')}
-          className="interactive"
+          className="interactive no-popup"
           aria-label="Toggle Menu"
           style={{
             background: 'transparent',
@@ -65,6 +65,14 @@ export default function Header({ activeSection, onSelectSection, frameTheme = 'y
             gap: '4px',
             padding: '6px 4px',
             cursor: 'pointer',
+            opacity: 0.9,
+            transition: 'opacity 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '1';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '0.9';
           }}
         >
           <span
@@ -116,14 +124,17 @@ export default function Header({ activeSection, onSelectSection, frameTheme = 'y
                   cursor: 'pointer',
                   position: 'relative',
                   padding: '4px 0',
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transformOrigin: 'center center',
                   borderBottom: isActive ? `2px solid ${textColor}` : '2px solid transparent',
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) e.currentTarget.style.color = textColor;
+                  e.currentTarget.style.transform = 'scale(1.14)';
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) e.currentTarget.style.color = mutedColor;
+                  e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
                 {item.label}
@@ -132,75 +143,95 @@ export default function Header({ activeSection, onSelectSection, frameTheme = 'y
           })}
         </nav>
 
-        {/* Social Round Icon Buttons */}
+        {/* Social Round Icon Buttons with Reference-Styled Tooltip */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <a
-            href="https://linkedin.com/in/danish-bilal-ansari-5596a1b3"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="interactive font-body"
-            aria-label="LinkedIn"
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              border: `1.2px solid ${borderColor}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: textColor,
-              textDecoration: 'none',
-              fontSize: '11px',
-              fontWeight: 700,
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = textColor;
-              e.currentTarget.style.backgroundColor = isRed
-                ? 'rgba(255, 255, 255, 0.15)'
-                : 'rgba(35, 38, 47, 0.08)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = borderColor;
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
-          >
-            in
-          </a>
+          <div className="tooltip-wrapper">
+            <a
+              href="https://linkedin.com/in/danish-bilal-ansari-5596a1b3"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="interactive font-body"
+              aria-label="LinkedIn"
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                border: `1.2px solid ${borderColor}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: textColor,
+                textDecoration: 'none',
+                fontSize: '11px',
+                fontWeight: 700,
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                transformOrigin: 'center center',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = textColor;
+                e.currentTarget.style.backgroundColor = isRed
+                  ? 'rgba(255, 255, 255, 0.15)'
+                  : 'rgba(35, 38, 47, 0.08)';
+                e.currentTarget.style.transform = 'scale(1.18)';
+                e.currentTarget.style.boxShadow = isRed ? '0 8px 16px rgba(0,0,0,0.25)' : '0 6px 14px rgba(0,0,0,0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = borderColor;
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              in
+            </a>
+            <span className="tooltip-box tooltip-bottom font-heading">
+              LinkedIn
+            </span>
+          </div>
 
-          <a
-            href="https://github.com/danishbilalansari"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="interactive"
-            aria-label="GitHub"
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              border: `1.5px solid ${borderColor}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: textColor,
-              textDecoration: 'none',
-              fontSize: '11px',
-              fontWeight: 700,
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = textColor;
-              e.currentTarget.style.backgroundColor = isRed
-                ? 'rgba(255, 255, 255, 0.15)'
-                : 'rgba(35, 38, 47, 0.08)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = borderColor;
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
-          >
-            gh
-          </a>
+          <div className="tooltip-wrapper">
+            <a
+              href="https://github.com/danishbilalansari"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="interactive"
+              aria-label="GitHub"
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                border: `1.5px solid ${borderColor}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: textColor,
+                textDecoration: 'none',
+                fontSize: '11px',
+                fontWeight: 700,
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                transformOrigin: 'center center',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = textColor;
+                e.currentTarget.style.backgroundColor = isRed
+                  ? 'rgba(255, 255, 255, 0.15)'
+                  : 'rgba(35, 38, 47, 0.08)';
+                e.currentTarget.style.transform = 'scale(1.18)';
+                e.currentTarget.style.boxShadow = isRed ? '0 8px 16px rgba(0,0,0,0.25)' : '0 6px 14px rgba(0,0,0,0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = borderColor;
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              gh
+            </a>
+            <span className="tooltip-box tooltip-bottom font-heading">
+              GitHub
+            </span>
+          </div>
         </div>
       </div>
     </header>

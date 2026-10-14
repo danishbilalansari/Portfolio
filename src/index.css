@@ -27,8 +27,59 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
-  cursor: default;
+  cursor: none !important;
 }
+
+/* Hide conventional OS cursor across all elements so only the custom cursor is displayed */
+*, *::before, *::after, button, a, input, select, textarea, [role="button"], .interactive {
+  cursor: none !important;
+}
+
+/* Universal Tactile Hover Physics for Clickable Elements */
+.interactive, button, a, [role="button"] {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, color 0.3s ease, opacity 0.25s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Micro-press bounce response on click */
+.interactive:active, button:active, a:active {
+  transform: scale(0.96) !important;
+}
+
+/* Explicitly disable popup transforms for static elements (e.g. Hamburger Menu) */
+.no-popup, .no-popup:hover, .no-popup:active {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Smooth Luxury Size Growth for Hero Floating Cards */
+.hero-card {
+  position: relative;
+  transform: scale(1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: transform, box-shadow;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.hero-card:hover {
+  transform: scale(1.12) !important;
+  z-index: 10;
+}
+
+.hero-card-1:hover {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16) !important;
+}
+
+.hero-card-2:hover {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28) !important;
+}
+
+
+
 
 #root {
   width: 100%;
@@ -243,5 +294,131 @@ html, body {
 .site-ready .popup-delay-pill-extra {
   animation-delay: 0.92s;
 }
+
+/* ==========================================================================
+   ELEVATED TOOLTIP & ICON BUTTON SYSTEM (Matching Reference Code)
+   ========================================================================== */
+
+/* Reference Code Class */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Tooltip Anchor Wrapper */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Floating Tooltip Box - Blackish-Grey Theme */
+.tooltip-box {
+  position: absolute;
+  background-color: #23262f;
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.16);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+  z-index: 1000;
+  line-height: 1;
+}
+
+/* Arrow Tip */
+.tooltip-box::before {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: #23262f;
+  transform: rotate(45deg);
+}
+
+/* Placement: Right (Used on Theme Switcher dock on left edge) */
+.tooltip-box.tooltip-right {
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+}
+
+.tooltip-box.tooltip-right::before {
+  left: -3px;
+  top: calc(50% - 3px);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.tooltip-wrapper:hover .tooltip-box.tooltip-right {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Placement: Bottom (Used on Header social icons on top edge) */
+.tooltip-box.tooltip-bottom {
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+}
+
+.tooltip-box.tooltip-bottom::before {
+  top: -3px;
+  left: calc(50% - 3px);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.tooltip-wrapper:hover .tooltip-box.tooltip-bottom {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Card 1: 4-square grid icon rotating in circle */
+.moving-circle-grid {
+  width: 10px;
+  height: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 4px);
+  gap: 2px;
+  transform-origin: center center;
+  animation: rotateInCircle 6s linear infinite;
+  will-change: transform;
+}
+
+.hero-card-1:hover .moving-circle-grid {
+  animation-duration: 2.5s;
+}
+
+@keyframes rotateInCircle {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 

@@ -1,6 +1,12 @@
 import React, { useRef } from 'react';
+import { Network } from 'lucide-react';
 
-export default function ThemeSwitcher({ frameTheme, onSelectTheme }) {
+export default function ThemeSwitcher({
+  frameTheme,
+  onSelectTheme,
+  showNetworkMesh = true,
+  onToggleNetworkMesh,
+}) {
   const containerRef = useRef(null);
   const isRed = frameTheme === 'red';
 
@@ -82,76 +88,172 @@ export default function ThemeSwitcher({ frameTheme, onSelectTheme }) {
         {themes.map((t) => {
           const isSelected = frameTheme === t.id;
           return (
-            <button
-              key={t.id}
-              onClick={() => onSelectTheme(t.id)}
-              className="interactive"
-              aria-label={`Switch to ${t.fullName}`}
-              title={t.fullName}
-              style={{
-                position: 'relative',
-                width: '34px',
-                height: '34px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: isSelected
-                  ? isRed
-                    ? '1.5px solid rgba(255, 255, 255, 0.45)'
-                    : '1.5px solid rgba(255, 255, 255, 0.95)'
-                  : '1.5px solid transparent',
-                backgroundColor: isSelected
-                  ? isRed
-                    ? 'rgba(255, 255, 255, 0.22)'
-                    : 'rgba(255, 255, 255, 0.95)'
-                  : 'transparent',
-                boxShadow: isSelected
-                  ? isRed
-                    ? '0 3px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.6)'
-                    : '0 3px 10px rgba(35, 38, 47, 0.15), inset 0 1px 1px #ffffff'
-                  : 'none',
-                cursor: 'pointer',
-                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: isSelected ? 'scale(1.05)' : 'scale(1)',
-              }}
-              onMouseEnter={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.transform = 'scale(1.1)';
-                  e.currentTarget.style.backgroundColor = isRed
-                    ? 'rgba(255, 255, 255, 0.1)'
-                    : 'rgba(35, 38, 47, 0.05)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.transform = 'scale(0.92)';
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.transform = isSelected ? 'scale(1.05)' : 'scale(1)';
-              }}
-            >
-              {/* 3D Glowing Specular Glass Gem Orb */}
-              <div
+            <div key={t.id} className="tooltip-wrapper">
+              <button
+                onClick={() => onSelectTheme(t.id)}
+                className="interactive"
+                aria-label={`Switch to ${t.fullName}`}
                 style={{
-                  width: '18px',
-                  height: '18px',
+                  position: 'relative',
+                  width: '34px',
+                  height: '34px',
                   borderRadius: '50%',
-                  background: t.orbGradient,
-                  boxShadow: t.orbGlow,
-                  border: '1px solid rgba(255, 255, 255, 0.9)',
-                  transition: 'transform 0.3s ease',
-                  transform: isSelected ? 'scale(1.12)' : 'scale(1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: isSelected
+                    ? isRed
+                      ? '1.5px solid rgba(255, 255, 255, 0.45)'
+                      : '1.5px solid rgba(255, 255, 255, 0.95)'
+                    : '1.5px solid transparent',
+                  backgroundColor: isSelected
+                    ? isRed
+                      ? 'rgba(255, 255, 255, 0.22)'
+                      : 'rgba(255, 255, 255, 0.95)'
+                    : 'transparent',
+                  boxShadow: isSelected
+                    ? isRed
+                      ? '0 3px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.6)'
+                      : '0 3px 10px rgba(35, 38, 47, 0.15), inset 0 1px 1px #ffffff'
+                    : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                  transformOrigin: 'center center',
                 }}
-              />
-            </button>
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = isSelected ? 'scale(1.18)' : 'scale(1.15)';
+                  if (!isSelected) {
+                    e.currentTarget.style.backgroundColor = isRed
+                      ? 'rgba(255, 255, 255, 0.12)'
+                      : 'rgba(35, 38, 47, 0.06)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = isSelected ? 'scale(1.05)' : 'scale(1)';
+                  if (!isSelected) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.transform = 'scale(0.96)';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.transform = isSelected ? 'scale(1.18)' : 'scale(1.15)';
+                }}
+              >
+                {/* 3D Glowing Specular Glass Gem Orb */}
+                <div
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '50%',
+                    background: t.orbGradient,
+                    boxShadow: t.orbGlow,
+                    border: '1px solid rgba(255, 255, 255, 0.9)',
+                    transition: 'transform 0.3s ease',
+                    transform: isSelected ? 'scale(1.12)' : 'scale(1)',
+                  }}
+                />
+              </button>
+
+              {/* Reference-Styled Floating Tooltip */}
+              <span className="tooltip-box tooltip-right font-heading">
+                {t.fullName}
+              </span>
+            </div>
           );
         })}
+
+        {/* Subtle Frosted Glass Divider */}
+        <div
+          style={{
+            width: '20px',
+            height: '1px',
+            backgroundColor: isRed
+              ? 'rgba(255, 255, 255, 0.22)'
+              : 'rgba(35, 38, 47, 0.14)',
+            margin: '2px 0',
+            borderRadius: '1px',
+          }}
+        />
+
+        {/* Background Network Mesh On/Off Toggle Button */}
+        <div className="tooltip-wrapper">
+          <button
+            onClick={onToggleNetworkMesh}
+            className="interactive"
+            aria-label="Toggle meshing"
+            style={{
+              position: 'relative',
+              width: '34px',
+              height: '34px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: showNetworkMesh
+                ? isRed
+                  ? '1.5px solid rgba(255, 255, 255, 0.45)'
+                  : '1.5px solid rgba(255, 255, 255, 0.95)'
+                : '1.5px solid transparent',
+              backgroundColor: showNetworkMesh
+                ? isRed
+                  ? 'rgba(255, 255, 255, 0.22)'
+                  : 'rgba(255, 255, 255, 0.95)'
+                : 'transparent',
+              boxShadow: showNetworkMesh
+                ? isRed
+                  ? '0 3px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.6)'
+                  : '0 3px 10px rgba(35, 38, 47, 0.15), inset 0 1px 1px #ffffff'
+                : 'none',
+              cursor: 'pointer',
+              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: 'scale(1)',
+              transformOrigin: 'center center',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.15)';
+              if (!showNetworkMesh) {
+                e.currentTarget.style.backgroundColor = isRed
+                  ? 'rgba(255, 255, 255, 0.12)'
+                  : 'rgba(35, 38, 47, 0.06)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              if (!showNetworkMesh) {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'scale(0.96)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'scale(1.15)';
+            }}
+          >
+            <Network
+              size={15}
+              strokeWidth={2.2}
+              style={{
+                color: showNetworkMesh
+                  ? isRed
+                    ? '#ffffff'
+                    : '#1a1917'
+                  : isRed
+                    ? 'rgba(255, 255, 255, 0.45)'
+                    : 'rgba(35, 38, 47, 0.45)',
+                transition: 'color 0.3s ease, opacity 0.3s ease',
+              }}
+            />
+          </button>
+
+          {/* Reference-Styled Floating Tooltip */}
+          <span className="tooltip-box tooltip-right font-heading">
+            Meshing
+          </span>
+        </div>
       </div>
     </div>
   );
