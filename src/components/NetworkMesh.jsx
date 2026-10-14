@@ -9,12 +9,15 @@ import React, { useEffect, useRef } from 'react';
  * - lineWidth: 0.45
  * - Optimized with spatial grid bucket clustering for silky 60-144 FPS
  */
-export default function NetworkMesh({ frameTheme = 'yellow', isVisible = true }) {
+export default function NetworkMesh({ frameTheme = 'yellow', isVisible = false }) {
   const canvasRef = useRef(null);
   const frameThemeRef = useRef(frameTheme);
-  frameThemeRef.current = frameTheme;
   const isVisibleRef = useRef(isVisible);
-  isVisibleRef.current = isVisible;
+
+  useEffect(() => {
+    frameThemeRef.current = frameTheme;
+    isVisibleRef.current = isVisible;
+  }, [frameTheme, isVisible]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -169,6 +172,11 @@ export default function NetworkMesh({ frameTheme = 'yellow', isVisible = true })
     }
 
     function animate() {
+      if (!isVisibleRef.current) {
+        rafId = requestAnimationFrame(animate);
+        return;
+      }
+
       ctx.clearRect(0, 0, width, height);
 
       // Move points

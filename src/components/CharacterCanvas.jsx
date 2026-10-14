@@ -235,7 +235,9 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
   const ctxRef = useRef(null);
   const glRef = useRef(null);
   const frameThemeRef = useRef(frameTheme);
-  frameThemeRef.current = frameTheme;
+  useEffect(() => {
+    frameThemeRef.current = frameTheme;
+  }, [frameTheme]);
 
   // Dual-Theme Cache
   const themeCacheRef = useRef({

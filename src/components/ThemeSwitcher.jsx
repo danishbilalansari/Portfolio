@@ -4,7 +4,7 @@ import { Network } from 'lucide-react';
 export default function ThemeSwitcher({
   frameTheme,
   onSelectTheme,
-  showNetworkMesh = true,
+  showNetworkMesh = false,
   onToggleNetworkMesh,
 }) {
   const containerRef = useRef(null);

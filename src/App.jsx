@@ -12,7 +12,7 @@ function App() {
   const [activeSection, setActiveSection] = useState(null);
   const [frameTheme, setFrameTheme] = useState('yellow');
   const [isReady, setIsReady] = useState(false);
-  const [showNetworkMesh, setShowNetworkMesh] = useState(true);
+  const [showNetworkMesh, setShowNetworkMesh] = useState(false);
 
   const isRed = frameTheme === 'red';
   const mainBg = isRed ? '#cd3f3c' : '#f8eec1';
