@@ -210,7 +210,7 @@ function renderWebGLFrame(glState, bmp, layout, themeKey, canvasW, canvasH) {
   gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
 
-export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }) {
+export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange, isPaused = false }) {
   const canvasRef = useRef(null);
   const [loadedPercent, setLoadedPercent] = useState(0);
   const [isReady, setIsReady] = useState(false);
@@ -235,9 +235,11 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
   const ctxRef = useRef(null);
   const glRef = useRef(null);
   const frameThemeRef = useRef(frameTheme);
+  const isPausedRef = useRef(isPaused);
   useEffect(() => {
     frameThemeRef.current = frameTheme;
-  }, [frameTheme]);
+    isPausedRef.current = isPaused;
+  }, [frameTheme, isPaused]);
 
   // Dual-Theme Cache
   const themeCacheRef = useRef({
@@ -493,6 +495,7 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
 
     // Fast pointer calculation
     const handlePointerMove = (clientX, clientY) => {
+      if (isPausedRef.current) return;
       hasUserMovedMouseRef.current = true;
       const { faceCenterX, faceCenterY, enterThreshold, exitThreshold } = layoutRef.current;
       const dx = clientX - faceCenterX;
@@ -526,6 +529,11 @@ export default function CharacterCanvas({ frameTheme = 'yellow', onReadyChange }
 
     // 60-144 FPS Hardware-synced render loop with continuous smooth tracking
     const render = (now) => {
+      if (isPausedRef.current) {
+        lastTimeRef.current = now;
+        rafId = requestAnimationFrame(render);
+        return;
+      }
       if (lastTimeRef.current === 0) lastTimeRef.current = now;
       const dt = Math.min(Math.max((now - lastTimeRef.current) / 1000, 0.001), 0.1);
       lastTimeRef.current = now;

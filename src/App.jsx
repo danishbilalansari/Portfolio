@@ -5,6 +5,7 @@ import Header from './components/Header';
 import HeroContent from './components/HeroContent';
 import CustomCursor from './components/CustomCursor';
 // import GlowingTubesCursor from './components/GlowingTubesCursor';
+import WorkModal from './components/WorkModal';
 import InfoDrawer from './components/InfoDrawer';
 import ThemeSwitcher from './components/ThemeSwitcher';
 
@@ -29,10 +30,10 @@ function App() {
       }}
     >
       {/* Dense Moving Line Mesh Background Effect - Behind profile image & all elements */}
-      <NetworkMesh frameTheme={frameTheme} isVisible={showNetworkMesh} />
+      <NetworkMesh frameTheme={frameTheme} isVisible={showNetworkMesh} isPaused={activeSection === 'WORK'} />
 
       {/* Zero-Ghosting 60FPS Character Animation Canvas & Dedicated Preloader */}
-      <CharacterCanvas frameTheme={frameTheme} onReadyChange={setIsReady} />
+      <CharacterCanvas frameTheme={frameTheme} onReadyChange={setIsReady} isPaused={activeSection === 'WORK'} />
 
       {/* Main UI Elements - Animated with individual popup entrances once ready */}
       <div
@@ -68,9 +69,16 @@ function App() {
           onToggleNetworkMesh={() => setShowNetworkMesh((prev) => !prev)}
         />
 
-        {/* Slide-over Luxury Drawer */}
+        {/* Glossy Pop-up Work Projects Modal */}
+        <WorkModal
+          isOpen={activeSection === 'WORK'}
+          onClose={() => setActiveSection(null)}
+          frameTheme={frameTheme}
+        />
+
+        {/* Slide-over Luxury Drawer for EXPERIENCE and CONTACT */}
         <InfoDrawer
-          activeSection={activeSection}
+          activeSection={activeSection === 'WORK' ? null : activeSection}
           onClose={() => setActiveSection(null)}
           frameTheme={frameTheme}
         />
