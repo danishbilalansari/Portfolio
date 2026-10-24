@@ -162,7 +162,7 @@ export default function InfoDrawer({ activeSection, onClose, frameTheme = 'yello
 // --- WORK SECTION (FEATURED SYSTEMS) ---
 function WorkSection({ frameTheme = 'yellow' }) {
   const isRed = frameTheme === 'red';
-  const sublabelColor = isRed ? '#fde047' : '#8c877b';
+  const sublabelColor = isRed ? '#D99070' : '#8c877b';
   const headingColor = isRed ? '#ffffff' : '#23262f';
   const descColor = isRed ? 'rgba(255, 255, 255, 0.85)' : '#666157';
 
@@ -173,7 +173,7 @@ function WorkSection({ frameTheme = 'yellow' }) {
   const cardHoverShadow = isRed ? '0 12px 30px rgba(0, 0, 0, 0.28)' : '0 10px 24px rgba(60, 50, 20, 0.08)';
 
   const cardTitleColor = isRed ? '#ffffff' : '#23262f';
-  const cardHighlightColor = isRed ? '#fde047' : '#8c877b';
+  const cardHighlightColor = isRed ? '#D99070' : '#8c877b';
   const cardDescColor = isRed ? 'rgba(255, 255, 255, 0.88)' : '#4d4a43';
 
   const pillBg = isRed ? 'rgba(255, 255, 255, 0.18)' : 'rgba(26, 25, 23, 0.06)';
@@ -339,7 +339,7 @@ function WorkSection({ frameTheme = 'yellow' }) {
 // --- ABOUT SECTION (CAREER & EXPERTISE FROM RESUME) ---
 function AboutSection({ frameTheme = 'yellow' }) {
   const isRed = frameTheme === 'red';
-  const sublabelColor = isRed ? '#fde047' : '#8c877b';
+  const sublabelColor = isRed ? '#D99070' : '#8c877b';
   const headingColor = isRed ? '#ffffff' : '#23262f';
   const descColor = isRed ? 'rgba(255, 255, 255, 0.85)' : '#575c69';
 
@@ -348,7 +348,7 @@ function AboutSection({ frameTheme = 'yellow' }) {
 
   const eduCardBg = isRed ? 'rgba(255, 255, 255, 0.12)' : '#ffffff';
   const eduCardBorder = isRed ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(35, 38, 47, 0.08)';
-  const eduLabelColor = isRed ? '#fde047' : '#888f9e';
+  const eduLabelColor = isRed ? '#D99070' : '#888f9e';
   const eduDegreeColor = isRed ? '#ffffff' : '#23262f';
   const eduUnivColor = isRed ? 'rgba(255, 255, 255, 0.8)' : '#575c69';
 
@@ -363,7 +363,7 @@ function AboutSection({ frameTheme = 'yellow' }) {
   const expCardBorder = isRed ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(255, 255, 255, 0.9)';
   const expRoleColor = isRed ? '#ffffff' : '#23262f';
   const expCompanyColor = isRed ? 'rgba(255, 255, 255, 0.8)' : '#575c69';
-  const expPeriodColor = isRed ? '#fde047' : '#888f9e';
+  const expPeriodColor = isRed ? '#D99070' : '#888f9e';
   const expPointColor = isRed ? 'rgba(255, 255, 255, 0.85)' : '#575c69';
 
   const experiences = [
@@ -596,7 +596,7 @@ function AboutSection({ frameTheme = 'yellow' }) {
 // --- CONTACT SECTION ---
 function ContactSection({ frameTheme = 'yellow' }) {
   const isRed = frameTheme === 'red';
-  const sublabelColor = isRed ? '#fde047' : '#8c877b';
+  const sublabelColor = isRed ? '#D99070' : '#8c877b';
   const headingColor = isRed ? '#ffffff' : '#23262f';
   const descColor = isRed ? 'rgba(255, 255, 255, 0.85)' : '#666157';
 
@@ -607,7 +607,7 @@ function ContactSection({ frameTheme = 'yellow' }) {
 
   const iconBoxBg = isRed ? 'rgba(255, 255, 255, 0.18)' : 'rgba(26, 25, 23, 0.05)';
   const iconColor = isRed ? '#ffffff' : '#23262f';
-  const labelColor = isRed ? '#fde047' : '#8c877b';
+  const labelColor = isRed ? '#D99070' : '#8c877b';
   const valColor = isRed ? '#ffffff' : '#23262f';
   const arrowColor = isRed ? 'rgba(255, 255, 255, 0.75)' : '#8c877b';
 
@@ -619,7 +619,7 @@ function ContactSection({ frameTheme = 'yellow' }) {
 
   const locationBg = isRed ? 'rgba(255, 255, 255, 0.12)' : 'rgba(26, 25, 23, 0.04)';
   const locationColor = isRed ? 'rgba(255, 255, 255, 0.88)' : '#55524b';
-  const locationIconColor = isRed ? '#fde047' : '#8c877b';
+  const locationIconColor = isRed ? '#D99070' : '#8c877b';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

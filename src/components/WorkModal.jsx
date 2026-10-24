@@ -66,7 +66,7 @@ const ALL_PROJECTS = [
     title: 'GNG Airline Reservation System',
     tagline: 'High-Scale Group Flight Reservation Microservices',
     highlight: 'Calrom • Production Airline System',
-    category: 'Airline',
+    category: 'Aviation',
     period: '2024 – Present',
     description:
       'High-throughput distributed flight booking infrastructure migrated from legacy monolith to modern .NET Aspire microservices. Features automated PNR processing, Hangfire background ticketing robots, and RabbitMQ/MassTransit asynchronous queue pipelines.',
@@ -78,7 +78,7 @@ const ALL_PROJECTS = [
     title: 'Groups Authentication Authority',
     tagline: 'Centralized OAuth & Identity Token Service',
     highlight: 'Calrom • Security Infrastructure',
-    category: 'Airline',
+    category: 'Aviation',
     period: '2024',
     description:
       'Secure distributed authentication and authorization microservice for airline multi-tenant operations. Orchestrated with RabbitMQ message streams, role-based access policies, and encrypted identity assertion tokens.',
@@ -177,6 +177,13 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
 
   const isRed = frameTheme === 'red';
 
+  // Always reset filter to 'All' when modal is opened
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedFilter('All');
+    }
+  }, [isOpen]);
+
   // Keyboard shortcut: close on Escape
   useEffect(() => {
     if (!isOpen) return;
@@ -201,13 +208,13 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
 
   if (!isOpen) return null;
 
-  const filterCategories = ['All', 'Airline', 'FinTech', 'Logistics'];
+  const filterCategories = ['All', 'FinTech', 'Aviation', 'Logistics'];
 
   const filteredProjects =
     selectedFilter === 'All'
       ? ALL_PROJECTS
       : ALL_PROJECTS.filter((p) => {
-          if (selectedFilter === 'Airline') {
+          if (selectedFilter === 'Aviation') {
             return p.id === 'airline' || p.id === 'auth';
           }
           if (selectedFilter === 'FinTech') {
@@ -223,7 +230,7 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
 
   const headerTitleColor = isRed ? '#ffffff' : '#23262f';
   const subtitleColor = isRed ? 'rgba(255, 255, 255, 0.82)' : '#575246';
-  const tagColor = isRed ? '#fde047' : '#92400e';
+  const tagColor = isRed ? '#D99070' : '#92400e';
 
   const cardBg = isRed
     ? 'rgba(255, 255, 255, 0.08)'
@@ -239,7 +246,7 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
 
   const cardTitleColor = isRed ? '#ffffff' : '#23262f';
   const cardDescColor = isRed ? 'rgba(255, 255, 255, 0.82)' : '#4a463f';
-  const cardHighlightColor = isRed ? '#fde047' : '#92400e';
+  const cardHighlightColor = isRed ? '#D99070' : '#92400e';
 
   const pillBg = isRed
     ? 'rgba(255, 255, 255, 0.18)'
@@ -504,9 +511,9 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                   display: 'flex',
                   flexDirection: 'column',
                   cursor: 'default',
-                  // Bottom to Top Trampoline Bouncing Launch on Load
-                  animation: `workCardBounceUp 2.2s cubic-bezier(0.22, 0.85, 0.32, 1) both`,
-                  animationDelay: `${0.12 + idx * 0.12}s`,
+                  // Crisp, Snappy Bottom-to-Top Trampoline Pop-Up Launch
+                  animation: `workCardBounceUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) both`,
+                  animationDelay: `${0.04 + idx * 0.045}s`,
                   transformOrigin: 'center center',
                 }}
               >

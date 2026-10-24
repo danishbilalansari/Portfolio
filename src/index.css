@@ -448,28 +448,25 @@ html, body {
   }
 }
 
-/* Bottom to Top Trampoline Bouncing Animation for Project Cards */
+/* Snappy Bottom to Top Trampoline Bouncing Launch for Project Cards */
 @keyframes workCardBounceUp {
   0% {
     opacity: 0;
-    transform: translateY(min(65vh, 420px)) scale(0.76);
+    transform: translateY(95px) scale(0.88);
   }
-  36% {
+  48% {
     opacity: 1;
-    transform: translateY(-24px) scale(1.05); /* Buoyant apex float */
+    transform: translateY(-10px) scale(1.025); /* buoyant apex float */
   }
-  56% {
-    transform: translateY(12px) scale(0.975);  /* Trampoline bed cushion dip */
+  70% {
+    transform: translateY(4px) scale(0.992);   /* trampoline cushion dip */
   }
-  74% {
-    transform: translateY(-6px) scale(1.02);   /* 2nd bounce rebound */
-  }
-  88% {
-    transform: translateY(2px) scale(0.995);   /* Micro settle */
+  86% {
+    transform: translateY(-1.5px) scale(1.004); /* micro settle */
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);         /* Neutral resting position */
+    transform: translateY(0) scale(1);        /* resting equilibrium */
   }
 }
 
@@ -535,28 +532,28 @@ html, body {
   }
 }
 
-/* Slow, silky, cushioned trampoline hover pop-up matching text physics */
+/* Fluid, responsive trampoline hover pop-up */
 .work-project-card {
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   contain: layout style;
-  transition: transform 1.1s cubic-bezier(0.25, 0.85, 0.35, 1), box-shadow 1.1s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.8s ease !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease !important;
 }
 
 .work-project-card:hover {
-  transform: translateY(-10px) scale(1.026) !important;
-  transition: transform 1.35s cubic-bezier(0.25, 0.85, 0.35, 1), box-shadow 1.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.8s ease !important;
-  box-shadow: 0 32px 64px -14px rgba(0, 0, 0, 0.28), 0 0 25px rgba(255, 255, 255, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-8px) scale(1.025) !important;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease !important;
+  box-shadow: 0 28px 56px -12px rgba(0, 0, 0, 0.28), 0 0 25px rgba(255, 255, 255, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.35) !important;
 }
 
 .work-project-card .work-card-img {
-  transition: transform 1.0s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .work-project-card:hover .work-card-img {
   transform: scale(1.06) !important;
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .work-close-button:hover {
