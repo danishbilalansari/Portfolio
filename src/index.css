@@ -502,25 +502,85 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* 3 Projects per row on desktop */
+/* Asymmetric 3x3 Bento Grid with Varied Widths */
 .work-projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
   width: 100%;
 }
 
+.work-card-span-12 {
+  grid-column: span 12;
+}
+
+.work-card-span-7 {
+  grid-column: span 7;
+}
+
+.work-card-span-6 {
+  grid-column: span 6;
+}
+
+.work-card-span-5 {
+  grid-column: span 5;
+}
+
+.work-card-span-4 {
+  grid-column: span 4;
+}
+
+.work-card-span-3 {
+  grid-column: span 3;
+}
+
+/* Tablet adjustments: adapt to clean 2-column or 1-column layout */
 @media (max-width: 1180px) {
   .work-projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
+    gap: 20px;
+  }
+  .work-card-span-5,
+  .work-card-span-4,
+  .work-card-span-3,
+  .work-card-span-7 {
+    grid-column: span 6;
   }
 }
 
+/* Mobile adjustments: all cards take full width */
 @media (max-width: 768px) {
   .work-projects-grid {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+  .work-card-span-12,
+  .work-card-span-7,
+  .work-card-span-6,
+  .work-card-span-5,
+  .work-card-span-4,
+  .work-card-span-3 {
+    grid-column: span 1;
+  }
+  .work-card-banner {
+  height: 220px;
+  flex-shrink: 0;
+    height: 200px !important;
+  }
+}
+
+/* Responsive 2-column body for wide hero cards */
+.work-card-body-wide {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 36px;
+}
+
+@media (max-width: 900px) {
+  .work-card-body-wide {
+    flex-direction: column !important;
+    gap: 18px !important;
   }
 }
 
@@ -534,6 +594,9 @@ html, body {
 
 /* Fluid, responsive trampoline hover pop-up */
 .work-project-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;

@@ -171,6 +171,67 @@ const ALL_PROJECTS = [
   },
 ];
 
+// Asymmetric 3x3 Bento Layout with varied/random widths and identical uniform heights:
+// - Strictly 3 cards per row across 3 rows (9 items total)
+// - Dynamic width distribution in each row (5 cols ~42%, 3 cols 25%, 4 cols ~33% = 12 cols total)
+// - Identical banner height (220px) and 100% card height across all cards for seamless horizontal alignment
+const getCardLayout = (idx, total) => {
+  if (total === 1) {
+    return { spanClass: 'work-card-span-12', bannerHeight: '220px', isWide: false };
+  }
+  if (total === 2) {
+    return { spanClass: 'work-card-span-6', bannerHeight: '220px', isWide: false };
+  }
+
+  // 3x3 Bento Grid for 9 items (3 rows of 3 items, identical 220px banner height):
+  // Row 1: [5 cols: Wide]   + [3 cols: Narrow]   + [4 cols: Medium] = 12
+  // Row 2: [4 cols: Medium] + [5 cols: Wide]     + [3 cols: Narrow] = 12
+  // Row 3: [3 cols: Narrow] + [4 cols: Medium]   + [5 cols: Wide]   = 12
+  const pattern9 = [
+    // Row 1
+    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false },
+    // Row 2
+    { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false },
+    // Row 3
+    { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
+  ];
+
+  if (total === 9 && pattern9[idx]) {
+    return pattern9[idx];
+  }
+
+  // 5 items (FinTech filter):
+  // Row 1 (3 items): 5 + 3 + 4 = 12
+  // Row 2 (2 items): 7 + 5 = 12
+  const pattern5 = [
+    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-7', bannerHeight: '220px', isWide: false },
+    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
+  ];
+
+  if (total === 5 && pattern5[idx]) {
+    return pattern5[idx];
+  }
+
+  // Fallback for any other count: 3-column cycle (5, 3, 4) with uniform 220px height
+  const cycle = idx % 3;
+  if (cycle === 0) {
+    return { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false };
+  }
+  if (cycle === 1) {
+    return { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false };
+  }
+  return { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false };
+};
+
 export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [imagesLoaded, setImagesLoaded] = useState({});
@@ -488,19 +549,21 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
           </div>
         </div>
 
-        {/* 3 Projects per Row on Desktop with Trampoline Bottom-to-Top Bouncing */}
+        {/* Asymmetric Bento Grid matching Reference Inspiration */}
         <div className="work-projects-grid">
           {filteredProjects.map((p, idx) => {
             const artwork = PROJECT_ARTWORK[p.id] || PROJECT_ARTWORK.airline;
             const IconComponent = artwork.icon || Cpu;
             const isLoaded = imagesLoaded[p.id];
+            const layout = getCardLayout(idx, filteredProjects.length);
 
             return (
               <div
                 key={`${selectedFilter}-${p.id}`}
-                className="interactive work-project-card"
+                className={`interactive work-project-card ${layout.spanClass}`}
                 style={{
                   position: 'relative',
+                  height: '100%',
                   borderRadius: '24px',
                   backgroundColor: cardBg,
                   border: cardBorder,
@@ -519,10 +582,12 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
               >
                 {/* 1. TOP HEADER: High-Impact Visual Banner (NO ARROWS) */}
                 <div
+                  className="work-card-banner"
                   style={{
                     position: 'relative',
                     width: '100%',
-                    height: '210px',
+                    height: '220px',
+                    flexShrink: 0,
                     overflow: 'hidden',
                     backgroundColor: isRed ? '#1a0507' : '#e6dcab',
                   }}
@@ -647,15 +712,18 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
 
                 {/* 2. BOTTOM BODY: Title, Tagline, Description & Stack */}
                 <div
+                  className={layout.isWide ? 'work-card-body-wide' : ''}
                   style={{
-                    padding: '22px 22px 24px',
+                    padding: layout.isWide ? '26px 30px 28px' : '22px 22px 24px',
                     display: 'flex',
-                    flexDirection: 'column',
+                    flexDirection: layout.isWide ? 'row' : 'column',
                     flex: 1,
                     justifyContent: 'space-between',
+                    gap: layout.isWide ? '36px' : '18px',
+                    alignItems: layout.isWide ? 'flex-start' : 'stretch',
                   }}
                 >
-                  <div>
+                  <div style={{ flex: layout.isWide ? '1 1 60%' : 'initial', maxWidth: layout.isWide ? '820px' : 'none' }}>
                     {/* Tagline in Pascal Case */}
                     <span
                       className="font-heading"
@@ -676,7 +744,7 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                     <h2
                       className="font-heading"
                       style={{
-                        fontSize: '18px',
+                        fontSize: layout.isWide ? '22px' : '18px',
                         fontWeight: 800,
                         lineHeight: 1.25,
                         letterSpacing: '-0.02em',
@@ -692,10 +760,10 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                     <p
                       className="font-body"
                       style={{
-                        fontSize: '12.5px',
-                        lineHeight: 1.55,
+                        fontSize: layout.isWide ? '13px' : '12.5px',
+                        lineHeight: 1.6,
                         color: cardDescColor,
-                        margin: '0 0 18px 0',
+                        margin: layout.isWide ? '0' : '0 0 18px 0',
                       }}
                     >
                       {p.description}
@@ -703,7 +771,17 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                   </div>
 
                   {/* Tech Stack Pills */}
-                  <div>
+                  <div style={{ flex: layout.isWide ? '0 0 36%' : 'initial', minWidth: layout.isWide ? '280px' : 'auto' }}>
+                    {layout.isWide && (
+                      <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontSize: '10px', fontWeight: 800, color: cardHighlightColor, letterSpacing: '0.06em' }}>
+                          ENTERPRISE STACK
+                        </span>
+                        <span style={{ fontSize: '10.5px', color: subtitleColor, fontWeight: 600 }}>
+                          • {p.period}
+                        </span>
+                      </div>
+                    )}
                     <div
                       style={{
                         display: 'flex',
