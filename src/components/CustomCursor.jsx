@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function CustomCursor({ frameTheme = 'yellow' }) {
   const dotRef = useRef(null);
@@ -125,12 +126,15 @@ export default function CustomCursor({ frameTheme = 'yellow' }) {
     };
   }, []);
 
-  return (
+  const cursorNode = (
     <div
       style={{
+        position: 'fixed',
+        inset: 0,
+        pointerEvents: 'none',
+        zIndex: 9999999,
         opacity: isVisible ? 1 : 0,
         transition: 'opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-        pointerEvents: 'none',
       }}
     >
       {/* Central crisp dot (0ms hardware lock) */}
@@ -145,7 +149,7 @@ export default function CustomCursor({ frameTheme = 'yellow' }) {
           backgroundColor: isRed ? '#ffffff' : '#23262f',
           borderRadius: '50%',
           pointerEvents: 'none',
-          zIndex: 9999,
+          zIndex: 9999999,
           boxShadow: isRed
             ? '0 0 10px 2px rgba(255, 255, 255, 0.65)'
             : '0 0 8px 1px rgba(35, 38, 47, 0.25)',
@@ -169,11 +173,14 @@ export default function CustomCursor({ frameTheme = 'yellow' }) {
             ? '0 0 20px rgba(255, 255, 255, 0.15)'
             : '0 0 16px rgba(35, 38, 47, 0.05)',
           pointerEvents: 'none',
-          zIndex: 9998,
+          zIndex: 9999998,
           willChange: 'transform, opacity',
           transition: 'border-color 0.3s ease, background-color 0.3s ease',
         }}
       />
     </div>
   );
+
+  if (typeof document === 'undefined') return null;
+  return createPortal(cursorNode, document.body);
 }

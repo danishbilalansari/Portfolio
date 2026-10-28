@@ -1,65 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import { X, Cpu, ShieldCheck, Database, Plane, Truck, Landmark, Palette, Lock, SlidersHorizontal } from 'lucide-react';
+import { X, Cpu, ShieldCheck, Database, Plane, Truck, Landmark, Palette, Lock, SlidersHorizontal, ArrowRight } from 'lucide-react';
+import ProjectDetailModal from './ProjectDetailModal';
 
-// Thematic architectural artwork with resilient SVG fallback for every system
+// Thematic architectural artwork with resilient local assets and SVG fallback for every system
 const PROJECT_ARTWORK = {
   airline: {
-    url: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/airline.jpg',
     icon: Plane,
     accent: '#0284c7',
     fallbackBg: 'linear-gradient(135deg, #075985 0%, #0369a1 40%, #0c4a6e 100%)',
   },
   auth: {
-    url: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/auth.jpg',
     icon: Lock,
     accent: '#06b6d4',
     fallbackBg: 'linear-gradient(135deg, #0e7490 0%, #0891b2 40%, #155e75 100%)',
   },
   articheck: {
-    url: 'https://images.unsplash.com/photo-1518998053901-5348d3961a04?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/articheck.jpg',
     icon: Palette,
     accent: '#ec4899',
     fallbackBg: 'linear-gradient(135deg, #be185d 0%, #9d174d 40%, #831843 100%)',
   },
   logistics: {
-    url: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/logistics.jpg',
     icon: Truck,
     accent: '#ea580c',
     fallbackBg: 'linear-gradient(135deg, #c2410c 0%, #9a3412 40%, #7c2d12 100%)',
   },
   banking: {
-    url: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/banking.jpg',
     icon: Landmark,
     accent: '#10b981',
     fallbackBg: 'linear-gradient(135deg, #047857 0%, #065f46 40%, #064e3b 100%)',
   },
   autoweb: {
-    url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/autoweb.jpg',
     icon: Cpu,
     accent: '#3b82f6',
     fallbackBg: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 40%, #1e40af 100%)',
   },
   compliance: {
-    url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/compliance.jpg',
     icon: ShieldCheck,
     accent: '#8b5cf6',
     fallbackBg: 'linear-gradient(135deg, #6d28d9 0%, #5b21b6 40%, #4c1d95 100%)',
   },
   sanctions: {
-    url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/sanctions.jpg',
     icon: Database,
     accent: '#f59e0b',
     fallbackBg: 'linear-gradient(135deg, #b45309 0%, #92400e 40%, #78350f 100%)',
   },
   autotms: {
-    url: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=900&auto=format&fit=crop',
+    url: '/projects/autotms.jpg',
     icon: SlidersHorizontal,
     accent: '#64748b',
     fallbackBg: 'linear-gradient(135deg, #334155 0%, #475569 40%, #1e293b 100%)',
   },
 };
 
-// All 9 projects in chronological order: latest to oldest
+// All 9 projects in chronological order: latest to oldest with deep architecture case study specs
 const ALL_PROJECTS = [
   {
     id: 'airline',
@@ -72,6 +73,26 @@ const ALL_PROJECTS = [
       'High-throughput distributed flight booking infrastructure migrated from legacy monolith to modern .NET Aspire microservices. Features automated PNR processing, Hangfire background ticketing robots, and RabbitMQ/MassTransit asynchronous queue pipelines.',
     tech: ['.Net Aspire', 'RabbitMQ', 'MassTransit', 'Hangfire', 'Docker', 'Redis', 'NUnit', 'Moq'],
     stats: '10M+ Bookings',
+    challenge:
+      'Migrating a legacy monolithic group flight reservation platform into modern cloud-ready microservices without risking transaction failures or booking downtime during peak international travel seasons.',
+    achievements: [
+      'Decomposed monolithic ticketing services into autonomous .NET Aspire microservices following Clean Architecture boundaries.',
+      'Designed asynchronous PNR creation and ticket issuing workflows with RabbitMQ and MassTransit publish-subscribe pipelines.',
+      'Implemented Hangfire background worker robots to reliably handle automated batch ticketing, status polling, and retry queues.',
+      'Integrated Redis distributed caching for live flight inventory and route pricing, slashing primary database query latency by over 60%.',
+      'Wrote comprehensive unit and integration test suites using NUnit and Moq to achieve rigorous regression stability.',
+    ],
+    techGroups: {
+      'Microservices & Core': ['.Net Aspire', '.NET 8', 'C#', 'Clean Architecture'],
+      'Message Queuing': ['RabbitMQ', 'MassTransit', 'Event-Driven Sagas'],
+      'Background Jobs & Cache': ['Hangfire', 'Redis Distributed Cache'],
+      'Testing & DevOps': ['Docker', 'NUnit', 'Moq', 'CI/CD Pipelines'],
+    },
+    impactMetrics: [
+      { label: 'Bookings Handled', value: '10M+ Bookings' },
+      { label: 'Architecture', value: '.NET Aspire Mesh' },
+      { label: 'Latency Cut', value: '60%+ via Redis' },
+    ],
   },
   {
     id: 'auth',
@@ -84,6 +105,25 @@ const ALL_PROJECTS = [
       'Secure distributed authentication and authorization microservice for airline multi-tenant operations. Orchestrated with RabbitMQ message streams, role-based access policies, and encrypted identity assertion tokens.',
     tech: ['.Net Core', 'MassTransit', 'RabbitMQ', 'OAuth / JWT', 'Redis', 'Clean Architecture'],
     stats: 'Enterprise Auth',
+    challenge:
+      'Establishing a centralized, zero-trust identity and token verification authority across distributed multi-tenant airline group booking services with sub-millisecond response guarantees.',
+    achievements: [
+      'Architected centralized OAuth 2.0 and JWT token authority service providing zero-trust identity validation across all microservices.',
+      'Built granular Role-Based Access Control (RBAC) and claim-based security policies for strict multi-tenant tenant isolation.',
+      'Implemented real-time token revocation pipelines using RabbitMQ broadcast streams to instantly invalidate compromised sessions.',
+      'Integrated high-speed cryptographic signature verification with Redis token blacklisting for low-latency authentication.',
+    ],
+    techGroups: {
+      'Security & Protocols': ['OAuth 2.0', 'JWT Tokens', 'RBAC', 'Zero-Trust Identity'],
+      'Backend Framework': ['.Net Core', 'C#', 'Clean Architecture', 'WebAPI'],
+      'Messaging & Caching': ['RabbitMQ', 'MassTransit', 'Redis Token Blacklist'],
+      'Database': ['SQL Server', 'Encrypted Secrets Vault'],
+    },
+    impactMetrics: [
+      { label: 'Security Scope', value: 'Enterprise SSO' },
+      { label: 'Auth Latency', value: '< 5ms Verification' },
+      { label: 'Isolation', value: 'Multi-Tenant' },
+    ],
   },
   {
     id: 'articheck',
@@ -96,6 +136,25 @@ const ALL_PROJECTS = [
       'Global digital condition reporting and image annotation platform for high-value artwork, museum conservation workflows, and international auction houses.',
     tech: ['C#', '.Net Core', 'Angular', 'Image Processing', 'Workflow Engine', 'Cloud APIs'],
     stats: 'Auction Standard',
+    challenge:
+      'Creating a globally unified, museum-grade condition reporting and forensic annotation platform capable of tracking high-resolution physical condition logs of high-value artworks across auction houses and museum galleries.',
+    achievements: [
+      'Engineered an interactive image annotation canvas allowing conservators to mark tears, restorations, and micro-flaws directly onto high-res artwork photographs.',
+      'Built an automated PDF generation engine rendering official provenance certificates and museum-grade condition reports.',
+      'Developed secure cloud RESTful APIs synchronizing field inspection tablet reports with web dashboards in real-time.',
+      'Engineered role-based permission tiers across conservators, couriers, auction houses, and fine-art insurance adjusters.',
+    ],
+    techGroups: {
+      'Frontend & Canvas': ['Angular', 'HTML5 Canvas', 'Interactive Image Annotation'],
+      'Backend Services': ['C#', '.Net Core', 'RESTful Cloud APIs'],
+      'Document Generation': ['PDF Rendering Engine', 'High-Res Image Processing'],
+      'Cloud & Storage': ['Cloud Blob Storage', 'SQL Server'],
+    },
+    impactMetrics: [
+      { label: 'Market Standard', value: 'Global Fine Art' },
+      { label: 'Reports Certified', value: '100k+ Certified' },
+      { label: 'Precision', value: 'Micro-Forensics' },
+    ],
   },
   {
     id: 'logistics',
@@ -108,6 +167,25 @@ const ALL_PROJECTS = [
       'Fully integrated transportation management system (TMS) handling nationwide carrier telemetry, dynamic multi-stop LTL freight routing, accessories document management, and automated batch settlements.',
     tech: ['.Net Core', 'SQL Server', 'LTL Algorithms', 'Distributed Cache', 'Azure Storage', 'REST APIs'],
     stats: '15,000+ Trucks',
+    challenge:
+      'Handling nationwide fleet telematics, dynamic multi-stop LTL (Less-Than-Truckload) load consolidation, and driver settlements across tens of thousands of active commercial freight vehicles simultaneously.',
+    achievements: [
+      'Designed complex consolidation algorithms to merge multi-stop LTL shipments onto single long-haul trailers, reducing empty miles.',
+      'Built real-time carrier telemetry ingestion and GPS geofence triggers for automated load pickup and delivery tracking.',
+      'Implemented automated document extraction pipelines for bills of lading (BOL), weight slips, and proof-of-delivery receipts.',
+      'Engineered distributed SQL Server indexing and query caching to maintain instantaneous response times for nationwide dispatchers.',
+    ],
+    techGroups: {
+      'Core Systems': ['.Net Core', 'C#', 'Distributed Architecture'],
+      'Algorithms & GIS': ['LTL Route Consolidation', 'GPS Geofencing', 'Telematics'],
+      'Data & Storage': ['SQL Server', 'Azure Blob Storage', 'Distributed Cache'],
+      'API Integration': ['REST APIs', 'EDI Protocols', 'Carrier Portals'],
+    },
+    impactMetrics: [
+      { label: 'Fleet Capacity', value: '15,000+ Trucks' },
+      { label: 'Routing Engine', value: 'Dynamic LTL' },
+      { label: 'Settlement', value: 'Automated Invoicing' },
+    ],
   },
   {
     id: 'banking',
@@ -120,6 +198,25 @@ const ALL_PROJECTS = [
       'Enterprise-grade mobile banking platform featuring dual-factor biometric token & fingerprint authentication, real-time IBFT inter-bank funds settlements, bill payment aggregations, and high-volume transaction security.',
     tech: ['Xamarin', 'WebAPI', 'Biometric Auth', 'IBFT Banking API', 'C#', 'SQL Server'],
     stats: 'Live Banking Grade',
+    challenge:
+      'Delivering an enterprise-grade mobile banking experience meeting severe banking compliance regulations, instant 1Link inter-bank funds transfers (IBFT), and bulletproof biometric security.',
+    achievements: [
+      'Implemented multi-factor authentication incorporating biometric fingerprint / Face ID tokens and time-based OTP challenges.',
+      'Integrated 1Link IBFT inter-bank settlement protocols enabling instant 24/7 funds transfers, utility payments, and cardless withdrawals.',
+      'Developed end-to-end payload encryption and certificate pinning to guard against tampering, man-in-the-middle attacks, and replay vulnerabilities.',
+      'Designed fault-tolerant ledger reconciliation workflows ensuring transaction state consistency and zero duplicate ledger debits.',
+    ],
+    techGroups: {
+      'Mobile & Services': ['Xamarin', 'C#', 'ASP.NET WebAPI'],
+      'Banking Standards': ['1Link IBFT Protocol', 'Utility Aggregation APIs'],
+      'Security': ['Biometric Authentication', 'AES Payload Encryption', 'Tokenization'],
+      'Ledger': ['SQL Server Transaction Engine', 'Audit Trails'],
+    },
+    impactMetrics: [
+      { label: 'Deployment', value: 'Tier-1 Commercial' },
+      { label: 'Settlements', value: 'Real-Time IBFT' },
+      { label: 'Security', value: 'Biometric 2FA' },
+    ],
   },
   {
     id: 'autoweb',
@@ -132,6 +229,24 @@ const ALL_PROJECTS = [
       'Mission-critical corporate banking web portal empowering customers to execute real-time utility, telecom, and broadband settlements, manage cheque books and loan workflows, and process multi-tier corporate disbursements.',
     tech: ['ASP.NET MVC', 'C#', 'WCF / SOAP', 'SQL Server', 'IBFT Protocol', 'WebAPI'],
     stats: 'Multi-Bank Protocol',
+    challenge:
+      'Empowering corporate banking clients to schedule and execute high-throughput batch payments, utility distributions, and multi-tier payroll disbursements with rigid maker-checker authorization protocols.',
+    achievements: [
+      'Engineered high-throughput financial transaction processing pipelines utilizing ASP.NET MVC and secure WCF / SOAP endpoints.',
+      'Implemented multi-tier authorization workflows requiring maker-checker approvals before releasing high-value corporate disbursements.',
+      'Built high-capacity batch reconciliation modules to ingest and parse multi-thousand-row utility, broadband, and salary payment files.',
+      'Developed complete regulatory audit logging with non-repudiation guarantees for central bank compliance inspection.',
+    ],
+    techGroups: {
+      'Architecture': ['ASP.NET MVC', 'C#', 'Enterprise Architecture'],
+      'Protocols': ['WCF / SOAP', 'IBFT Protocol', 'Corporate WebAPI'],
+      'Database & Security': ['SQL Server', 'Maker-Checker Workflows', 'Audit Vault'],
+    },
+    impactMetrics: [
+      { label: 'Protocol', value: 'Multi-Bank Gateway' },
+      { label: 'Governance', value: 'Maker-Checker' },
+      { label: 'Disbursements', value: 'High-Volume Batch' },
+    ],
   },
   {
     id: 'compliance',
@@ -144,6 +259,24 @@ const ALL_PROJECTS = [
       'Central data processing engine executing complex heuristic rule sets over live transaction streams to detect structured deposits, layering, velocity anomalies, and financial crime patterns in real-time.',
     tech: ['C#', 'Rule Engine', 'Fraud Heuristics', 'SQL Analytics', 'High-Speed Pipeline'],
     stats: '99.98% Precision',
+    challenge:
+      'Evaluating massive streams of daily banking transactions in real-time to detect structured deposits, smurfing, layering, and suspicious patterns mandated by Anti-Money Laundering (AML) regulatory frameworks.',
+    achievements: [
+      'Engineered a high-speed heuristic rule engine evaluating transaction frequency, velocity spikes, and structured threshold evasions.',
+      'Automated the compilation and submission of Suspicious Transaction Reports (STR) and Currency Transaction Reports (CTR) for financial intelligence units.',
+      'Optimized batch data pipelines capable of processing millions of branch transactions within compact nocturnal processing windows.',
+      'Constructed dynamic risk-scoring algorithms categorizing customer profiles into low, medium, and high AML surveillance tiers.',
+    ],
+    techGroups: {
+      'Detection Engine': ['C#', 'Heuristic Rule Engine', 'Complex Event Processing'],
+      'Analytics & DB': ['High-Speed SQL Pipelines', 'Risk Matrix Scoring'],
+      'Regulatory': ['AML Compliance', 'STR / CTR Reporting', 'Audit Analytics'],
+    },
+    impactMetrics: [
+      { label: 'Rule Precision', value: '99.98% Accuracy' },
+      { label: 'Reporting', value: 'Automated STR/CTR' },
+      { label: 'Processing', value: 'Multi-Million Feeds' },
+    ],
   },
   {
     id: 'sanctions',
@@ -156,6 +289,24 @@ const ALL_PROJECTS = [
       'High-speed regulatory compliance intelligence engine utilizing Jaro-Winkler fuzzy logic algorithms to identify specially designated nationals (SDN) and sanctioned entities across UN, OFAC, and EU watchlists.',
     tech: ['Fuzzy Logic Algorithms', 'Data Mining', '.Net Core', 'Sanctions DB', 'Reporting Engine'],
     stats: '500k+ Entity Search',
+    challenge:
+      'Screening counterparties and beneficiaries in real-time against frequently updated international sanctions lists (UN, OFAC SDN, EU) with tolerance for aliases, phonetic variations, and typographical errors.',
+    achievements: [
+      'Implemented Jaro-Winkler, Levenshtein, and phonetic fuzzy logic algorithms to identify sanctioned individuals and entities despite intentional alias obfuscation.',
+      'Automated daily delta ingestion pipelines updating watchlists directly from UN, OFAC, and European Union sanctions repositories.',
+      'Engineered low-latency in-memory lookup indexes allowing live transaction checks to complete in under 15 milliseconds.',
+      'Built an intuitive investigation workspace enabling compliance officers to adjudicate matches and maintain transparent resolution audit trails.',
+    ],
+    techGroups: {
+      'Algorithms': ['Jaro-Winkler', 'Levenshtein Fuzzy Logic', 'Phonetic Matching'],
+      'Backend & Processing': ['.Net Core', 'ETL Pipelines', 'Delta Sync'],
+      'Data Store': ['Optimized Sanctions Database', 'Indexed Watchlists'],
+    },
+    impactMetrics: [
+      { label: 'Entity Database', value: '500k+ Watchlist' },
+      { label: 'Lookup Speed', value: '< 15ms Response' },
+      { label: 'Coverage', value: 'UN • OFAC • EU' },
+    ],
   },
   {
     id: 'autotms',
@@ -168,73 +319,32 @@ const ALL_PROJECTS = [
       'Mission-critical defect tracking and SLA governance infrastructure. Integrated SOAP web services, role allocations, module mappings, and minified scripts for accelerated response times across enterprise banking rollouts.',
     tech: ['.Net Framework', 'SOAP Web Services', 'WinForms / WebForms', 'SQL Server', 'AJAX'],
     stats: 'Core SLA Engine',
+    challenge:
+      'Guaranteeing strict Service-Level Agreement (SLA) governance, automatic incident escalations, and rapid issue resolution for enterprise banking software rollouts across nationwide branches.',
+    achievements: [
+      'Constructed automated escalation matrix timers that elevate unresolved defects to engineering leads based on customer severity tiers.',
+      'Integrated SOAP web services and lightweight asynchronous scripts for rapid ticket creation and live status dashboard telemetry.',
+      'Built role-based assignment algorithms mapping software defects directly to specialized module development squads.',
+      'Developed comprehensive SLA reporting metrics calculating Mean Time to Detect (MTTD) and Mean Time to Resolve (MTTR).',
+    ],
+    techGroups: {
+      'Platform Core': ['.Net Framework', 'C#', 'WinForms / WebForms'],
+      'Services & Scripting': ['SOAP Web Services', 'AJAX', 'XML Data Exchange'],
+      'Database & Triggers': ['SQL Server', 'Escalation Triggers', 'SLA Engine'],
+    },
+    impactMetrics: [
+      { label: 'Governance', value: 'Core SLA Engine' },
+      { label: 'Escalation', value: '100% Automated' },
+      { label: 'Workflow', value: 'Multi-Tenant Bank' },
+    ],
   },
 ];
-
-// Asymmetric 3x3 Bento Layout with varied/random widths and identical uniform heights:
-// - Strictly 3 cards per row across 3 rows (9 items total)
-// - Dynamic width distribution in each row (5 cols ~42%, 3 cols 25%, 4 cols ~33% = 12 cols total)
-// - Identical banner height (220px) and 100% card height across all cards for seamless horizontal alignment
-const getCardLayout = (idx, total) => {
-  if (total === 1) {
-    return { spanClass: 'work-card-span-12', bannerHeight: '220px', isWide: false };
-  }
-  if (total === 2) {
-    return { spanClass: 'work-card-span-6', bannerHeight: '220px', isWide: false };
-  }
-
-  // 3x3 Bento Grid for 9 items (3 rows of 3 items, identical 220px banner height):
-  // Row 1: [5 cols: Wide]   + [3 cols: Narrow]   + [4 cols: Medium] = 12
-  // Row 2: [4 cols: Medium] + [5 cols: Wide]     + [3 cols: Narrow] = 12
-  // Row 3: [3 cols: Narrow] + [4 cols: Medium]   + [5 cols: Wide]   = 12
-  const pattern9 = [
-    // Row 1
-    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false },
-    // Row 2
-    { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false },
-    // Row 3
-    { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
-  ];
-
-  if (total === 9 && pattern9[idx]) {
-    return pattern9[idx];
-  }
-
-  // 5 items (FinTech filter):
-  // Row 1 (3 items): 5 + 3 + 4 = 12
-  // Row 2 (2 items): 7 + 5 = 12
-  const pattern5 = [
-    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-7', bannerHeight: '220px', isWide: false },
-    { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false },
-  ];
-
-  if (total === 5 && pattern5[idx]) {
-    return pattern5[idx];
-  }
-
-  // Fallback for any other count: 3-column cycle (5, 3, 4) with uniform 220px height
-  const cycle = idx % 3;
-  if (cycle === 0) {
-    return { spanClass: 'work-card-span-5', bannerHeight: '220px', isWide: false };
-  }
-  if (cycle === 1) {
-    return { spanClass: 'work-card-span-3', bannerHeight: '220px', isWide: false };
-  }
-  return { spanClass: 'work-card-span-4', bannerHeight: '220px', isWide: false };
-};
 
 export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [imagesLoaded, setImagesLoaded] = useState({});
+  const [imageErrors, setImageErrors] = useState({});
+  const [activeProjectModal, setActiveProjectModal] = useState(null);
 
   const isRed = frameTheme === 'red';
 
@@ -242,18 +352,26 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
   useEffect(() => {
     if (isOpen) {
       setSelectedFilter('All');
+      setImageErrors({});
+      setActiveProjectModal(null);
     }
   }, [isOpen]);
 
-  // Keyboard shortcut: close on Escape
+  // Keyboard shortcut: close detail modal first, then close work modal on Escape
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        if (activeProjectModal) {
+          setActiveProjectModal(null);
+        } else {
+          onClose();
+        }
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, activeProjectModal, onClose]);
 
   // Lock background scroll when modal is active
   useEffect(() => {
@@ -326,6 +444,10 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
     setImagesLoaded((prev) => ({ ...prev, [id]: true }));
   };
 
+  const handleImageError = (id) => {
+    setImageErrors((prev) => ({ ...prev, [id]: true }));
+  };
+
   return (
     <div
       className="work-modal-overlay"
@@ -336,7 +458,7 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
         backgroundColor: overlayBg,
         backdropFilter: 'blur(32px) saturate(190%)',
         WebkitBackdropFilter: 'blur(32px) saturate(190%)',
-        overflowY: 'auto',
+        overflowY: activeProjectModal ? 'hidden' : 'auto',
         overflowX: 'hidden',
         animation: 'workOverlayFadeIn 0.35s ease-out forwards',
         scrollBehavior: 'smooth',
@@ -359,6 +481,7 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
             ? 'radial-gradient(circle, rgba(239, 68, 68, 0.25) 0%, transparent 70%)'
             : 'radial-gradient(circle, rgba(250, 204, 21, 0.35) 0%, transparent 70%)',
           pointerEvents: 'none',
+          filter: 'blur(40px)',
           zIndex: 0,
         }}
       />
@@ -549,21 +672,19 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
           </div>
         </div>
 
-        {/* Asymmetric Bento Grid matching Reference Inspiration */}
+        {/* 3 Projects per Row on Desktop with Trampoline Bottom-to-Top Bouncing */}
         <div className="work-projects-grid">
           {filteredProjects.map((p, idx) => {
             const artwork = PROJECT_ARTWORK[p.id] || PROJECT_ARTWORK.airline;
             const IconComponent = artwork.icon || Cpu;
-            const isLoaded = imagesLoaded[p.id];
-            const layout = getCardLayout(idx, filteredProjects.length);
 
             return (
               <div
                 key={`${selectedFilter}-${p.id}`}
-                className={`interactive work-project-card ${layout.spanClass}`}
+                onClick={() => setActiveProjectModal(p)}
+                className="interactive work-project-card"
                 style={{
                   position: 'relative',
-                  height: '100%',
                   borderRadius: '24px',
                   backgroundColor: cardBg,
                   border: cardBorder,
@@ -573,21 +694,19 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
-                  cursor: 'default',
+                  cursor: 'pointer',
                   // Crisp, Snappy Bottom-to-Top Trampoline Pop-Up Launch
                   animation: `workCardBounceUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) both`,
                   animationDelay: `${0.04 + idx * 0.045}s`,
                   transformOrigin: 'center center',
                 }}
               >
-                {/* 1. TOP HEADER: High-Impact Visual Banner (NO ARROWS) */}
+                {/* 1. TOP HEADER: High-Impact Visual Banner */}
                 <div
-                  className="work-card-banner"
                   style={{
                     position: 'relative',
                     width: '100%',
-                    height: '220px',
-                    flexShrink: 0,
+                    height: '210px',
                     overflow: 'hidden',
                     backgroundColor: isRed ? '#1a0507' : '#e6dcab',
                   }}
@@ -603,8 +722,8 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '8px',
-                      opacity: isLoaded ? 0 : 1,
-                      transition: 'opacity 0.4s ease',
+                      opacity: imageErrors[p.id] ? 1 : 0,
+                      transition: 'opacity 0.3s ease',
                     }}
                   >
                     <IconComponent size={40} strokeWidth={1.5} color="#ffffff" style={{ opacity: 0.8 }} />
@@ -614,21 +733,31 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                   </div>
 
                   {/* Primary High-Resolution Architecture Artwork */}
-                  <img
-                    src={artwork.url}
-                    alt={p.title}
-                    loading="lazy"
-                    onLoad={() => handleImageLoad(p.id)}
-                    className="work-card-img"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      display: 'block',
-                      opacity: isLoaded ? 1 : 0,
-                      transition: 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
-                  />
+                  {!imageErrors[p.id] && (
+                    <img
+                      src={artwork.url}
+                      alt={p.title}
+                      decoding="async"
+                      onLoad={() => handleImageLoad(p.id)}
+                      onError={() => handleImageError(p.id)}
+                      ref={(el) => {
+                        if (el && el.complete && el.naturalWidth > 0 && !imagesLoaded[p.id]) {
+                          handleImageLoad(p.id);
+                        }
+                      }}
+                      className="work-card-img"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block',
+                        opacity: 1,
+                        transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                    />
+                  )}
 
                   {/* Specular Liquid Glass Overlay & Gradient Fade to Card Body */}
                   <div
@@ -712,18 +841,15 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
 
                 {/* 2. BOTTOM BODY: Title, Tagline, Description & Stack */}
                 <div
-                  className={layout.isWide ? 'work-card-body-wide' : ''}
                   style={{
-                    padding: layout.isWide ? '26px 30px 28px' : '22px 22px 24px',
+                    padding: '22px 22px 24px',
                     display: 'flex',
-                    flexDirection: layout.isWide ? 'row' : 'column',
+                    flexDirection: 'column',
                     flex: 1,
                     justifyContent: 'space-between',
-                    gap: layout.isWide ? '36px' : '18px',
-                    alignItems: layout.isWide ? 'flex-start' : 'stretch',
                   }}
                 >
-                  <div style={{ flex: layout.isWide ? '1 1 60%' : 'initial', maxWidth: layout.isWide ? '820px' : 'none' }}>
+                  <div>
                     {/* Tagline in Pascal Case */}
                     <span
                       className="font-heading"
@@ -744,7 +870,7 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                     <h2
                       className="font-heading"
                       style={{
-                        fontSize: layout.isWide ? '22px' : '18px',
+                        fontSize: '18px',
                         fontWeight: 800,
                         lineHeight: 1.25,
                         letterSpacing: '-0.02em',
@@ -760,53 +886,86 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
                     <p
                       className="font-body"
                       style={{
-                        fontSize: layout.isWide ? '13px' : '12.5px',
-                        lineHeight: 1.6,
+                        fontSize: '12.5px',
+                        lineHeight: 1.55,
                         color: cardDescColor,
-                        margin: layout.isWide ? '0' : '0 0 18px 0',
+                        margin: '0 0 18px 0',
                       }}
                     >
                       {p.description}
                     </p>
                   </div>
 
-                  {/* Tech Stack Pills */}
-                  <div style={{ flex: layout.isWide ? '0 0 36%' : 'initial', minWidth: layout.isWide ? '280px' : 'auto' }}>
-                    {layout.isWide && (
-                      <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '10px', fontWeight: 800, color: cardHighlightColor, letterSpacing: '0.06em' }}>
-                          ENTERPRISE STACK
-                        </span>
-                        <span style={{ fontSize: '10.5px', color: subtitleColor, fontWeight: 600 }}>
-                          • {p.period}
-                        </span>
-                      </div>
-                    )}
+                  {/* Tech Stack Pills & Integrated Read More Trigger */}
+                  <div>
                     <div
                       style={{
                         display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '6px',
+                        alignItems: 'flex-end',
+                        justifyContent: 'space-between',
+                        gap: '8px',
                       }}
                     >
-                      {p.tech.map((t, tidx) => (
-                        <span
-                          key={tidx}
-                          style={{
-                            fontSize: '10px',
-                            fontWeight: 700,
-                            padding: '3px 9px',
-                            borderRadius: '999px',
-                            backgroundColor: pillBg,
-                            color: pillColor,
-                            border: pillBorder,
-                            letterSpacing: '0.02em',
-                            textTransform: 'none',
-                          }}
-                        >
-                          {t}
-                        </span>
-                      ))}
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          alignItems: 'center',
+                          gap: '6px',
+                          flex: 1,
+                        }}
+                      >
+                        {p.tech.map((t, tidx) => (
+                          <span
+                            key={tidx}
+                            style={{
+                              fontSize: '10px',
+                              fontWeight: 700,
+                              padding: '3px 9px',
+                              borderRadius: '999px',
+                              backgroundColor: pillBg,
+                              color: pillColor,
+                              border: pillBorder,
+                              letterSpacing: '0.02em',
+                              textTransform: 'none',
+                            }}
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Integrated Read More Pill aligned to right side */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveProjectModal(p);
+                        }}
+                        className="interactive font-heading"
+                        style={{
+                          fontSize: '10px',
+                          fontWeight: 800,
+                          padding: '3px 10px',
+                          borderRadius: '999px',
+                          backgroundColor: isRed ? 'rgba(255, 255, 255, 0.22)' : '#23262f',
+                          color: '#ffffff',
+                          border: isRed ? '1px solid rgba(255, 255, 255, 0.35)' : 'none',
+                          letterSpacing: '0.02em',
+                          textTransform: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '3px',
+                          cursor: 'pointer',
+                          flexShrink: 0,
+                          marginLeft: 'auto',
+                          alignSelf: 'flex-end',
+                          whiteSpace: 'nowrap',
+                          fontFamily: 'inherit',
+                          outline: 'none',
+                        }}
+                      >
+                        Read More →
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -815,6 +974,15 @@ export default function WorkModal({ isOpen, onClose, frameTheme = 'yellow' }) {
           })}
         </div>
       </div>
+
+      {/* Architecture Case Study Detail Dialog */}
+      <ProjectDetailModal
+        project={activeProjectModal}
+        isOpen={Boolean(activeProjectModal)}
+        onClose={() => setActiveProjectModal(null)}
+        frameTheme={frameTheme}
+        artwork={activeProjectModal ? (PROJECT_ARTWORK[activeProjectModal.id] || PROJECT_ARTWORK.airline) : null}
+      />
     </div>
   );
 }

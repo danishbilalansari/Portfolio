@@ -502,85 +502,25 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Asymmetric 3x3 Bento Grid with Varied Widths */
+/* 3 Projects per row on desktop */
 .work-projects-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
   width: 100%;
 }
 
-.work-card-span-12 {
-  grid-column: span 12;
-}
-
-.work-card-span-7 {
-  grid-column: span 7;
-}
-
-.work-card-span-6 {
-  grid-column: span 6;
-}
-
-.work-card-span-5 {
-  grid-column: span 5;
-}
-
-.work-card-span-4 {
-  grid-column: span 4;
-}
-
-.work-card-span-3 {
-  grid-column: span 3;
-}
-
-/* Tablet adjustments: adapt to clean 2-column or 1-column layout */
 @media (max-width: 1180px) {
   .work-projects-grid {
-    gap: 20px;
-  }
-  .work-card-span-5,
-  .work-card-span-4,
-  .work-card-span-3,
-  .work-card-span-7 {
-    grid-column: span 6;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
   }
 }
 
-/* Mobile adjustments: all cards take full width */
 @media (max-width: 768px) {
   .work-projects-grid {
     grid-template-columns: 1fr;
     gap: 18px;
-  }
-  .work-card-span-12,
-  .work-card-span-7,
-  .work-card-span-6,
-  .work-card-span-5,
-  .work-card-span-4,
-  .work-card-span-3 {
-    grid-column: span 1;
-  }
-  .work-card-banner {
-  height: 220px;
-  flex-shrink: 0;
-    height: 200px !important;
-  }
-}
-
-/* Responsive 2-column body for wide hero cards */
-.work-card-body-wide {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 36px;
-}
-
-@media (max-width: 900px) {
-  .work-card-body-wide {
-    flex-direction: column !important;
-    gap: 18px !important;
   }
 }
 
@@ -590,6 +530,30 @@ html, body {
     align-items: flex-start !important;
     gap: 16px !important;
   }
+}
+
+/* Contained smooth scrollbar for Project Case Study dialog */
+.project-detail-dialog {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 120, 120, 0.4) transparent;
+}
+
+.project-detail-dialog::-webkit-scrollbar {
+  width: 8px;
+}
+
+.project-detail-dialog::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 14px 0;
+}
+
+.project-detail-dialog::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 120, 120, 0.35);
+  border-radius: 999px;
+}
+
+.project-detail-dialog::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(120, 120, 120, 0.6);
 }
 
 /* Fluid, responsive trampoline hover pop-up */
